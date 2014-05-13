@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Kerm.is Controller</title>
+
+    <meta name="viewport" content="initial-scale=1, user-scalable=no">
+
+    <style type="text/css">
+    body, html {
+        margin:0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+        overflow: hidden;
+        background: #8ECCE3;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    #wrap {
+        width: 50%;
+        height: 100%;
+        left: 25%;
+        position: absolute;
+        background: #a1582b;
+    }
+    .x2, .x {
+        color: white;
+        text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+        font-size: 1rem;
+        line-height: 0;
+        padding: 5px;
+    }
+    .a {
+        display: none;
+    }
+    input[type='range'] {
+        -webkit-appearance: none;
+        width: 90%;
+        height: 46px;
+        padding: 3px;
+        -webkit-border-radius: 15px;
+        border-radius: 15px;
+        border: none;
+        background: rgba(0, 0, 0, 0.5);
+    }
+    input[type='range']::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 60px;
+        height: 60px;
+        background: white;
+        border-radius: 100%;
+        -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+    button {
+        // border-radius: 100%;
+        width: 100px;
+        height: 100px;
+        border: none;
+        font-size: 1.5rem;
+        background: rgba(255, 255, 255, 0.6);
+        font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 800;
+        color: rgba(0, 0, 0, 0.7);
+        -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        width:90%;
+        height: 50%;
+        position: absolute;
+    }
+    .round:hover {
+    }
+    button:active {
+        -webkit-box-shadow:inset 0 0 5px rgba(0, 0, 0, 0.5);
+        -moz-box-shadow:inset 0 0 5px rgba(0, 0, 0, 0.5);
+        box-shadow:inset 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+    #pull {
+        top: 20%;
+        width: 90% !important;
+        height: 70% !important;
+        margin-left:5% !important;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="wrap">
+        <br>
+        <div class="x2">Not Connected</div>
+        <br>
+        <div class="x"></div>
+        <br>
+        <div class="x3 a"></div>
+
+        <!--         <label for="rotation">Rotation</label>
+        <br>
+        <input type="range" min="0" value="180" max="360" id="rotation" name="rotation">
+
+        <br>
+        <br>
+
+        <label for="angle">Angle</label>
+        <br>
+        <input type="range" min="0" value="50" max="100" id="angle" name="angle">
+
+        <br>
+        <br>
+        <br>
+
+        <button class="round" id="drop">Drop</button> -->
+        <button class="round" id="pull">Pull up</button>
+
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="/libs/tappy.js"></script>
+    <script src="/js/libs/socket.io.min.js"></script>
+    <script>
+    // var socket = io.connect('http://192.168.1.13:3000');
+    var currentURL = window.location.href;
+    var loc = window.location;
+    console.log(loc);
+    if (loc.port != undefined) {
+        var currentURL = loc.protocol + '//' + loc.hostname + ':' + loc.port;
+    } else {
+        var currentURL = loc.protocol + '//' + loc.hostname;
+    }
+    console.log(currentURL);
+    var socket = io.connect(currentURL);
+
+    var room = queryParam('roomNumber');
+    if (room == '') {
+        room = location.hash.replace('#', '');
+    }
+    //var room = location.hash.replace('#','');
+
+    var motionD;
+
+    $(function() {
+
+        $('.round').css('height', $('.round').width());
+
+        $('.round').bind("tap", function(e) {
+            // alert( "tap!" );
+            socket.emit('pull',{hallo: 'wereld'})
+        });
+
+
+        socket.on('connect', function() {
+            // Connected, let's sign-up for to receive messages for this room
+            socket.emit('room', room);
+            socket.emit('message', {
+                msg: 'mobile joined room with ID ' + room
+            });
+
+            $('.x2').html("Connected to " + room);
+        });
+
+        socket.on('message', function(data) {
+            console.log('Incoming message:', data.msg);
+        });
+
+        socket.on('motionDataOut', function(data) {
+            //console.log('Incoming message:', data);
+            /*$('.x2').html(data.motion)*/
+        });
+
+        // socket.emit('message', {msg: 'emit-test'})
+
+        if (window.DeviceOrientationEvent) {
+            // $('.x').html("DeviceOrientation is supported");
+            window.addEventListener('deviceorientation', handleMotion, false);
+        } else {
+            $('.x').html("<br>Motion Control is not supported in this browser");
+        }
+
+        function handleMotion(event) {
+            /*$('.x').html('<h5>Motion:</h5><br>gamma: ' + event.gamma + ' <br>beta:' + event.beta + ' <br> alpha:' + event.alpha);*/
+
+            motionD = {
+                gamma: event.gamma,
+                beta: event.beta,
+                alpha: event.alpha
+            }
+            // socket.emit('message', {
+            //     msg: event,
+            // })
+
+        }
+
+    })
+
+    setInterval(function() {
+        socket.emit('motionData', motionD)
+        // socket.emit('message', motionD)
+        // $('.x3').html('motion data: ', motionD)
+    }, 1000/30)
+
+    /////// to get room from URL //////////
+
+    function queryParam(name) {
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(window.location.href);
+        if (results == null) return "";
+        else return results[1];
+    }
+
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF'.split('');
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.round(Math.random() * 15)];
+        }
+        return color;
+    }
+    </script>
+
+</body>
+
+</html>
