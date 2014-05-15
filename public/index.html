@@ -8,6 +8,7 @@
         padding: 0;
         width: 100%;
         height: 100%;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
     canvas{
         position: absolute;
@@ -16,7 +17,6 @@
         position: absolute;
         width: 100%;
         text-align: center;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         color:white;
         z-index: 100;
         font-weight: 100;
@@ -26,10 +26,30 @@
         line-height: 80%;
         font-weight: 100;
     }
+    .overlay{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        background: #EFEFEF;
+        z-index: 1000;
+    }
+    .percentLoaded{
+        position: absolute;
+        text-align: center;
+        font-size: 2em;
+        width: 10%;
+        left: 45%;
+        top: 30%;
+        z-index: 1001;
+    }
     </style>
 </head>
 
 <body>
+    <div class="overlay">
+        <div class="percentLoaded">0%</div>
+    </div>
     <div class="info">
     <h2>Use your arrow keys to steer</h2>
     <h2>Press <strong>C</strong> To switch cam</h2>
@@ -57,6 +77,10 @@
     <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
     <script src="js/libs/leap-0.5.0.min.js"></script>
     <script src="js/libs/leapController.js"></script>
+
+    <!-- Preload and sound stuff -->
+    <script src="//code.createjs.com/preloadjs-0.4.1.min.js"></script>
+    <script src="//code.createjs.com/soundjs-0.5.2.min.js"></script>
 
     <!-- Physics stuff -->
     <script src="js/libs/physi.js"></script>

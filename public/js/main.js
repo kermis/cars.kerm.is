@@ -22,8 +22,37 @@ var sky;
 
 var otoo;
 
-init();
-animate();
+$(function() {
+    var queue = new createjs.LoadQueue();
+    queue.installPlugin(createjs.Sound);
+    queue.on("complete", handleComplete, this);
+    queue.on("progress", handleProgress, this);
+    queue.loadManifest([
+        // {id: "physijs_worker",src: "/js/libs/physijs_worker.js"},
+        {id: "ammo",src: "/js/libs/ammo.js"},
+        {id: "landscape",src: "/models/landscape.js"},
+        {id: "physijs_worker",src: "/models/botsotoo.js"},
+        {id: "bump",src: "/sound/bump.mp3"},
+        {id: "tuut",src: "/sound/tuut2.mp3"},
+        {id: "music",src: "/sound/jump.mp3"}
+        ]);
+
+
+})
+
+function handleComplete(){
+    $('.overlay').delay(1000).fadeOut('slow');
+    init();
+    animate();
+
+    createjs.Sound.play("music", {loop:-1});
+}
+
+function handleProgress(e){
+    var percentLoaded = Math.round(e.loaded * 100);
+    $('.percentLoaded').html(percentLoaded+ ' %');
+}
+
 
 function init() {
 
@@ -56,6 +85,8 @@ function init() {
 
     setGround();
     makeACar();
+
+    makeNPCcar(car);
 
     //
     // lights
@@ -137,16 +168,31 @@ function render() {
 }
 
 physicsLoop();
+physicsLoopAI();
 
 function physicsLoop() {
 
-    if (otoo) {
+    // console.log(otoos[0])
+    if (otoos[0]) {
         setOtooPosition();
     }
 
     setTimeout(function() {
         physicsLoop();
     }, 1000 / 60)
+
+}
+
+function physicsLoopAI() {
+
+    // console.log(otoos[0])
+    if (cars[1]) {
+        lookAtAllTheseCarsMove();
+    }
+
+    setTimeout(function() {
+        physicsLoopAI();
+    }, 1000 )
 
 }
 
