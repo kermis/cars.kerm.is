@@ -41,11 +41,11 @@ $(function() {
 })
 
 function handleComplete(){
-    $('.overlay').delay(1000).fadeOut('slow');
+    $('.overlay').delay(10).fadeOut('slow');
     init();
     animate();
 
-    createjs.Sound.play("music", {loop:-1});
+    // createjs.Sound.play("music", {loop:-1});
 }
 
 function handleProgress(e){
@@ -75,7 +75,7 @@ function init() {
 
     //landscape
     var landscape = new THREE.ObjectLoader();
-    landscape.load('/models/landscape.js', function(mesh) {
+    landscape.load('/models/landscape2.js', function(mesh) {
         // console.log(mesh);
 
         mesh.scale.set(0.1, 0.1, 0.1);
@@ -160,6 +160,10 @@ function render() {
 
     sky.rotation.y += 0.01;
 
+    if (otoos[0]) {
+        setOtooPosition();
+    }
+
     if (otoo) {
         // otoo.rotation.y += 0.01;
 
@@ -167,7 +171,8 @@ function render() {
 
 }
 
-physicsLoop();
+//start the loops
+// physicsLoop();
 physicsLoopAI();
 
 function physicsLoop() {
@@ -192,20 +197,17 @@ function physicsLoopAI() {
 
     setTimeout(function() {
         physicsLoopAI();
-    }, 1000 )
+    }, 2000)
 
 }
-
-document.onkeydown = handleKeyDown;
 
 function camConfig() {
     camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 10, 10000);
     camera.position.set(0, 100, 130);
     camera.rotation.x = deg2rad(-40);
     // camera.lookAt(0,0,0);
-    sceneCam = camera;
 
-    POVcamera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 10, 10000);
+    POVcamera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 10, 10000);
     POVcamera.position.z = 22;
 
     camInUse = 2;
@@ -215,63 +217,15 @@ function camConfig() {
     overViewCam.rotation.x = -1.570796;
 
     scene.add(overViewCamHolder)
-    overViewCamHolder.position.y = 300;
-    overViewCamHolder.position.z = -100;
-    overViewCamHolder.rotation.y = 1.570796;
+    overViewCamHolder.position.y = 630;
+    // overViewCamHolder.position.x = 500;
+    overViewCamHolder.position.x = 700;
+    overViewCamHolder.position.z = -30;
+    // overViewCamHolder.rotation.y = 1.570796;
     overViewCamHolder.add(overViewCam)
     //
     camArr = [camera, POVcamera, overViewCam]
 
-}
-
-function handleKeyDown(e) {
-    //up -> 38
-    //down -> 40
-    //left -> 37
-    //right -> 39
-    //space -> 32
-
-    switch (e.keyCode) {
-        case 38:
-            //moveCar('up');
-            // otooPhysi.position.x -= 10;
-            // otooPhysi.__dirtyPosition = true;
-            break;
-        case 40:
-            //moveCar('down');
-            // otooPhysi.position.x += 10;
-            // otooPhysi.__dirtyPosition = true;
-
-            break;
-        case 37:
-            //moveCar('left');
-            // otooPhysi.rotation.y -= 0.1;
-            // otooPhysi.__dirtyPosition = true;
-
-            break;
-        case 39:
-            //moveCar('right');
-            // otooPhysi.rotation.y += 0.1;
-            // otooPhysi.__dirtyPosition = true;
-
-            break;
-    }
-
+     sceneCam = camera;
 
 }
-
-function reduceTo360(angle) {
-    var newAngle = angle;
-    while (newAngle <= 0) {
-        newAngle += 360
-    };
-    while (newAngle >= 360) {
-        newAngle -= 360
-    };
-    return newAngle;
-}
-
-
-// setTimeout(function() {
-//     render();
-// }, 1000);

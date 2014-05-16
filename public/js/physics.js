@@ -2,8 +2,6 @@ var ground, otoo, otooPhysi;
 var vehicle_body, vehicle;
 var car = {}, car_material;
 var velocity = 40;
-var carStartX = 50;
-var carStartZ = 50;
 
 var otoos = [];
 var cars = [];
@@ -40,7 +38,7 @@ function setGround() {
 
 function makeNPCcar() {
 
-    var total = 5;
+    var total = 9;
 
     for (var i = 1; i < total; i++) {
 
@@ -54,16 +52,6 @@ function makeNPCcar() {
 
     };
 
-
-    // cars[2] = {};
-
-    // setNpcOtoo(2);
-
-    // makeCarBody(cars[2]);
-
-    // setWheels(cars[2]);
-
-    // cars[1].position.set( 0,100,0)
 }
 
 function makeACar() {
@@ -77,11 +65,7 @@ function makeACar() {
 
     var car = cars[0];
     car.body.addEventListener('collision', function(e){carCollisionHandler(e, car)})
-
-    car.wheel_fl.addEventListener('collision', function(e){carCollisionHandler(e, car)})
-    car.wheel_fr.addEventListener('collision', function(e){carCollisionHandler(e, car)})
-    car.wheel_bl.addEventListener('collision', function(e){carCollisionHandler(e, car)})
-    car.wheel_br.addEventListener('collision', function(e){carCollisionHandler(e, car)})
+    // car.body.children[0].addEventListener('collision', function(e){carCollisionHandler(e, car)})
 
 
     function carCollisionHandler(otherObjects, relativeVelocity, relativeRotation, contactNormal) {
@@ -96,351 +80,6 @@ function makeACar() {
 
 }
 
-function setPlayerOtoo(index) {
-
-    // var otoo = otoos[index];
-
-    //Botsotoo
-    var otooLoader = new THREE.ObjectLoader();
-    otooLoader.load('/models/botsotoo.js', function(mesh) {
-
-        mesh.scale.set(0.03, 0.03, 0.03)
-        otoos[index] = mesh;
-
-        steeringWheel = new THREE.Object3D();
-
-        steeringWheel.add(mesh.children[0])
-        otoos[index].add(steeringWheel)
-
-        // steeringWheel.children[1].rotation.y = 1;
-
-        scene.add(otoos[index]);
-
-        otoos[index].position.set(0, 100, 0);
-        POVcamera.position.y = 20;
-
-        POVcamHolder = new THREE.Object3D();
-
-        POVcamHolder.scale.set(30, 30, 30)
-        POVcamHolder.rotation.y = 1.570796;
-        // POVcamHolder.__dirtyposition = true;
-
-        POVcamHolder.add(POVcamera);
-        otoos[index].add(POVcamHolder);
-
-    });
-}
-
-function setNpcOtoo(index) {
-
-    // var otoo = otoos[index];
-
-    //Botsotoo
-    var otooLoader = new THREE.ObjectLoader();
-    otooLoader.load('/models/botsotoo.js', function(mesh) {
-
-        mesh.scale.set(0.03, 0.03, 0.03)
-        otoos[index] = mesh;
-
-        steeringWheel = new THREE.Object3D();
-
-        steeringWheel.add(mesh.children[0])
-        otoos[index].add(steeringWheel)
-
-        console.log(mesh.children[0].children[2])
-
-        mesh.children[0].children[2].children[0].material.color.r = Math.random();
-        mesh.children[0].children[2].children[0].material.color.g = Math.random();
-        mesh.children[0].children[2].children[0].material.color.b = Math.random();
-
-        // steeringWheel.children[1].rotation.y = 1;
-
-        scene.add(otoos[index]);
-
-        otoos[index].position.set(0, 100, 0);
-    });
-}
-
-
-function makeCarBody(car, index, npc){
-
-    // Car
-    car_material = Physijs.createMaterial(
-        new THREE.MeshLambertMaterial({
-            color: 0xff6666,
-            transparent: true,
-            opacity: testPacity,
-        }),
-        .8, // high friction
-        .4 // low restitution
-    );
-
-    car.body = new Physijs.BoxMesh(
-        new THREE.CubeGeometry(12, 10, 6),
-        car_material,
-        1000
-    );
-
-    car.bodyRotated = new Physijs.BoxMesh(
-        new THREE.CubeGeometry(6, 6, 14),
-        car_material,
-        1000
-    );
-    // car.bodyRotated.position.y = 10;
-    // car.bodyRotated.position.x = carStartX;
-    // car.bodyRotated.position.z = carStartZ;
-
-
-    car.body.position.y = 10;
-    car.body.position.x = carStartX;
-    car.body.position.z = carStartZ;
-    if(npc){
-        switch(index){
-            case 1:
-                car.body.position.x = carStartX-100;
-                car.body.position.z = carStartZ;
-                break;
-            case 2:
-                car.body.position.x = carStartX-50;
-                car.body.position.z = carStartZ;
-                break;
-            case 3:
-                car.body.position.x = carStartX-50;
-                car.body.position.z = carStartZ-170;
-                break;
-            case 4:
-                car.body.position.x = carStartX-100;
-                car.body.position.z = carStartZ-150;
-                break;
-        }
-    }
-
-    car.body.scale.x = 2.3;
-    car.body.receiveShadow = car.body.castShadow = true;
-
-    car.body.add(car.bodyRotated);
-
-    scene.add(car.body);
-};
-
-function setWheels(car, index, npc){
-    var yWheels = car.body.position.y - 7;
-
-    var carStartX = car.body.position.x;
-    var carStartZ = car.body.position.z;
-
-    var offsetX = 10;
-    var offsetZ = 4.5;
-
-    var fl_positionX = carStartX - offsetX;
-    var fl_positionY = yWheels;
-    var fl_positionZ = carStartZ - offsetZ;
-
-    var fr_positionX = carStartX - offsetX;
-    var fr_positionY = yWheels;
-    var fr_positionZ = carStartZ + offsetZ;
-
-    var bl_positionX = carStartX + offsetX;
-    var bl_positionY = yWheels;
-    var bl_positionZ = carStartZ - offsetZ;
-
-    var br_positionX = carStartX + offsetX;
-    var br_positionY = yWheels;
-    var br_positionZ = carStartZ + offsetZ;
-
-
-    wheel_material = Physijs.createMaterial(
-        new THREE.MeshLambertMaterial({
-            color: 0x444444,
-            transparent: true,
-            opacity: testPacity,
-        }),
-        0.7, // high friction
-        1 // medium restitution
-    );
-    var carWheelRadius = 2;
-    wheel_geometry = new THREE.CylinderGeometry(carWheelRadius, carWheelRadius, 2, 10);
-
-
-    car.wheel_fl = new Physijs.CylinderMesh(
-        wheel_geometry,
-        wheel_material,
-        500
-    );
-    car.wheel_fl.rotation.x = Math.PI / 2;
-    car.wheel_fl.position.set(fl_positionX, fl_positionY, fl_positionZ);
-    car.wheel_fl.receiveShadow = car.wheel_fl.castShadow = true;
-    scene.add(car.wheel_fl);
-    car.wheel_fl_constraint = new Physijs.DOFConstraint(
-        car.wheel_fl, car.body, new THREE.Vector3(fl_positionX, fl_positionY, fl_positionZ)
-    );
-    scene.addConstraint(car.wheel_fl_constraint);
-    car.wheel_fl_constraint.setAngularLowerLimit({
-        x: 0,
-        y: -Math.PI / 8,
-        z: 1
-    });
-    car.wheel_fl_constraint.setAngularUpperLimit({
-        x: 0,
-        y: Math.PI / 8,
-        z: 0
-    });
-
-    car.wheel_fr = new Physijs.CylinderMesh(
-        wheel_geometry,
-        wheel_material,
-        500
-    );
-    car.wheel_fr.rotation.x = Math.PI / 2;
-    car.wheel_fr.position.set(fr_positionX, fr_positionY, fr_positionZ);
-    car.wheel_fr.receiveShadow = car.wheel_fr.castShadow = true;
-    scene.add(car.wheel_fr);
-    car.wheel_fr_constraint = new Physijs.DOFConstraint(
-        car.wheel_fr, car.body, new THREE.Vector3(fr_positionX, fr_positionY, fr_positionZ)
-    );
-    scene.addConstraint(car.wheel_fr_constraint);
-    car.wheel_fr_constraint.setAngularLowerLimit({
-        x: 0,
-        y: -Math.PI / 8,
-        z: 1
-    });
-    car.wheel_fr_constraint.setAngularUpperLimit({
-        x: 0,
-        y: Math.PI / 8,
-        z: 0
-    });
-
-    car.wheel_bl = new Physijs.CylinderMesh(
-        wheel_geometry,
-        wheel_material,
-        500
-    );
-    car.wheel_bl.rotation.x = Math.PI / 2;
-    car.wheel_bl.position.set(bl_positionX, bl_positionY, bl_positionZ);
-    car.wheel_bl.receiveShadow = car.wheel_bl.castShadow = true;
-    scene.add(car.wheel_bl);
-    car.wheel_bl_constraint = new Physijs.DOFConstraint(
-        car.wheel_bl, car.body, new THREE.Vector3(bl_positionX, bl_positionY, bl_positionZ)
-    );
-    scene.addConstraint(car.wheel_bl_constraint);
-    car.wheel_bl_constraint.setAngularLowerLimit({
-        x: 0,
-        y: 0,
-        z: 0
-    });
-    car.wheel_bl_constraint.setAngularUpperLimit({
-        x: 0,
-        y: 0,
-        z: 0
-    });
-
-    car.wheel_br = new Physijs.CylinderMesh(
-        wheel_geometry,
-        wheel_material,
-        500
-    );
-
-    car.wheel_br.rotation.x = Math.PI / 2;
-    car.wheel_br.position.set(br_positionX, br_positionY, br_positionZ);
-    car.wheel_br.receiveShadow = car.wheel_br.castShadow = true;
-    scene.add(car.wheel_br);
-    car.wheel_br_constraint = new Physijs.DOFConstraint(
-        car.wheel_br, car.body, new THREE.Vector3(br_positionX, br_positionY, br_positionZ)
-    );
-    scene.addConstraint(car.wheel_br_constraint);
-    car.wheel_br_constraint.setAngularLowerLimit({
-        x: 0,
-        y: 0,
-        z: 0
-    });
-    car.wheel_br_constraint.setAngularUpperLimit({
-        x: 0,
-        y: 0,
-        z: 0
-    });
-}
-
-function controlCar(ev, car) {
-    switch (ev.keyCode) {
-        case 37:
-            // Left
-            // // configureAngularMotor(which, low_angle, high_angle, velocity, max_force)
-            car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, 3, 200);
-            car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, 3, 200);
-
-            car.wheel_fl_constraint.enableAngularMotor(1);
-            car.wheel_fr_constraint.enableAngularMotor(1);
-            break;
-
-        case 39:
-            // Right
-            //  MATH.PI /3 -> 60°;
-            //  MATH.PI /2 -> 90°;
-            car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, -3, 200);
-            car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, -3, 200);
-
-
-            car.wheel_fl_constraint.enableAngularMotor(1);
-            car.wheel_fr_constraint.enableAngularMotor(1);
-            break;
-
-        case 38:
-            // Up
-            // configureAngularMotor(which, low_angle, high_angle, velocity, max_force)
-            car.wheel_bl_constraint.configureAngularMotor(2, 1, 0, velocity, 2000);
-            car.wheel_br_constraint.configureAngularMotor(2, 1, 0, velocity, 2000);
-
-            car.wheel_bl_constraint.enableAngularMotor(2);
-            car.wheel_br_constraint.enableAngularMotor(2);
-            break;
-
-        case 40:
-            // Down
-            car.wheel_bl_constraint.configureAngularMotor(2, 1, 0, -velocity, 2000);
-            car.wheel_br_constraint.configureAngularMotor(2, 1, 0, -velocity, 2000);
-
-            car.wheel_bl_constraint.enableAngularMotor(2);
-            car.wheel_br_constraint.enableAngularMotor(2);
-            break;
-        case 32:
-            //space
-            // createjs.Sound.stop("tuut");
-            createjs.Sound.play("tuut");
-            break;
-        case 67:
-            // c
-            switchCam();
-            break;
-    }
-}
-
-function stopCar(ev, car) {
-            switch (ev.keyCode) {
-                case 37:
-                    // Left
-                    car.wheel_fl_constraint.disableAngularMotor(1);
-                    car.wheel_fr_constraint.disableAngularMotor(1);
-                    break;
-
-                case 39:
-                    // Right
-                    car.wheel_fl_constraint.disableAngularMotor(1);
-                    car.wheel_fr_constraint.disableAngularMotor(1);
-                    break;
-
-                case 38:
-                    // Up
-                    car.wheel_bl_constraint.disableAngularMotor(2);
-                    car.wheel_br_constraint.disableAngularMotor(2);
-                    break;
-
-                case 40:
-                    // Down
-                    car.wheel_bl_constraint.disableAngularMotor(2);
-                    car.wheel_br_constraint.disableAngularMotor(2);
-                    break;
-            }
-        }
 
 function buildBarriers(){
     //big island
@@ -456,9 +95,9 @@ function buildBarriers(){
     buildBarier(120, -40, -182, deg2rad(18));
     buildBarier(65, 36, -175, deg2rad(-60));
 
-    //Borders island
+    //Borders
     buildBarier(230, -145, -90, deg2rad(91));
-    buildBarier(230, 116, -90, deg2rad(92.5));
+    buildBarier(120, 120, -40, deg2rad(92.5));
 
     buildBarier(180, -20, 92, deg2rad(-4));
     buildBarier(100, -107, 58, deg2rad(-44));
@@ -466,23 +105,121 @@ function buildBarriers(){
 
     buildBarier(120, -106, -233, deg2rad(39));
     buildBarier(120, 80, -224, deg2rad(-30));
-    buildBarier(120, -20, -258, deg2rad(-9));
+    buildBarier(120, -20, -256, deg2rad(-9));
+
+    //
+    //Nu de nieuwe nog
+    //Gang onder
+    buildBarier(120, 180, -97, deg2rad(-6));
+    buildBarier(120, 280, -69, deg2rad(-23));
+    buildBarier(50, 345, -30, deg2rad(-45));
+    buildBarier(45, 380, -20, deg2rad(0));
+    buildBarier(60, 435, -10, deg2rad(0));
+    buildBarier(60, 485, -8, deg2rad(-3));
+
+    //gang boven
+    buildBarier(70, 160, -183, deg2rad(-24));
+    buildBarier(100, 240, -167, deg2rad(-4));
+    buildBarier(135, 336, -118, deg2rad(-33));
+    buildBarier(110, 447, -74, deg2rad(-5));
+
+    //buiten grote cirkel (wijzerzin)
+    buildBarier(100, 497, -115, deg2rad(90));
+    buildBarier(100, 530, -179, deg2rad(43));
+    buildBarier(250, 630, -250, deg2rad(32));
+    buildBarier(80, 730, -290, deg2rad(-17));
+    buildBarier(80, 790, -280, deg2rad(-10));
+    buildBarier(120, 850, -250, deg2rad(-35));
+    buildBarier(80, 928, -200, deg2rad(-30));
+    buildBarier(80, 943, -180, deg2rad(-50));
+    buildBarier(90, 995, -118, deg2rad(-52));
+    buildBarier(40, 1025, -70, deg2rad(90));
+    buildBarier(20, 1031, -48, deg2rad(-45));
+    buildBarier(200, 1047, 45, deg2rad(-88));
+    buildBarier(250, 950, 225, deg2rad(37.5));
+    buildBarier(250, 800, 280, deg2rad(0));
+    buildBarier(150, 650, 230, deg2rad(-37));
+    buildBarier(150, 600, 190, deg2rad(113));
+    buildBarier(20, 562, 125, deg2rad(0));
+    buildBarier(150, 545, 100, deg2rad(103));
+    buildBarier(20, 525, 30, deg2rad(-10));
+    buildBarier(40, 512, 10, deg2rad(90));
+
+    /*
+      ***     ***
+     **1*     *2**
+      ***     ***
+
+      ***     ***
+     **3*     *4**
+      ***     ***
+
+    */
+
     //lengte, naar rechts, naar onder, rotatie y-as
+    // eiland 1 (CCW)
+    buildBarier(60, 627, -70, deg2rad(-12));
+    buildBarier(55, 680, -73.5, deg2rad(27));
+    buildBarier(20, 710, -95, deg2rad(90));
+    buildBarier(55, 722, -112, deg2rad(32));
+    buildBarier(40, 745, -145, deg2rad(95));
+    buildBarier(20, 737, -169, deg2rad(-45));
+    buildBarier(43, 715, -174, deg2rad(-3));
+    buildBarier(13, 694, -170, deg2rad(70));
+    buildBarier(50, 671, -151, deg2rad(12));
+    buildBarier(85, 620, -115, deg2rad(45));
+
+
+    // eiland 4
+    buildBarier(117, 815, 140, deg2rad(90));
+    buildBarier(30, 830, 200, deg2rad(0));
+    buildBarier(125, 896, 160, deg2rad(40));
+    buildBarier(87, 948, 85, deg2rad(80));
+    buildBarier(87, 908, 45, deg2rad(-3));
+    buildBarier(30, 858, 55, deg2rad(75));
+    buildBarier(36, 836, 75, deg2rad(30));
+
+    // eiland 2
+    buildBarier(75, 815, -145, deg2rad(90));
+    buildBarier(35, 825, -175, deg2rad(-35));
+    buildBarier(75, 859, -135, deg2rad(-57));
+    buildBarier(70, 892, -90, deg2rad(-55));
+    buildBarier(30, 915, -68, deg2rad(0));
+    buildBarier(42, 932, -50, deg2rad(-65));
+    buildBarier(65, 905, -32, deg2rad(3));
+    buildBarier(30, 864, -36, deg2rad(-33));
+    buildBarier(85, 837, -73, deg2rad(-57));
+
+    //eiland 4 (CCW)
+    buildBarier(90, 645, 9, deg2rad(-5));
+    buildBarier(130, 640, 60, deg2rad(-57));
+    buildBarier(40, 675, 120, deg2rad(-82));
+    buildBarier(30, 688, 145, deg2rad(-18));
+    buildBarier(30, 700, 155, deg2rad(-75));
+    buildBarier(55, 725, 170, deg2rad(-10));
+    buildBarier(100, 748, 125, deg2rad(90));
+    buildBarier(55, 725, 70, deg2rad(-12));
+    buildBarier(30, 708, 50, deg2rad(-85));
+    buildBarier(30, 697, 26, deg2rad(-50));
+
+
+
 }
 
 function buildBarier(length, xPosition, zPosition, rotation) {
     var material = Physijs.createMaterial(
         new THREE.MeshLambertMaterial({
-            color: 0xFF0000,
+            // color: 0xFF0000,
+            color: 0x0000000,
             transparent: true,
-            opacity: testPacity
+            opacity:  testPacity
         }),
         .1, // high friction
-        2 // low restitution
+        0.4 // low restitution
     );
 
     var mesh = new Physijs.BoxMesh(
-        new THREE.CubeGeometry(length, 10, 10),
+        new THREE.CubeGeometry(length, 30, 10),
         material,
         0
     );
@@ -494,7 +231,6 @@ function buildBarier(length, xPosition, zPosition, rotation) {
     // console.log('barrier build')
 
 };
-
 
 function switchCam() {
 
@@ -517,24 +253,32 @@ function switchCam() {
 
 function setOtooPosition() {
 
-    // car = cars[0];
-    // otoo = otoos[0];
-    // console.Log(cars[0])
-    // console.Log(otoos[0])
-    // otoo = otoos[0];
 
-    otoos[0].position.set(cars[0].body.position.x, cars[0].body.position.y - 8.5, cars[0].body.position.z - 2);
-    otoos[0].rotation.set(cars[0].body.rotation.x, cars[0].body.rotation.y, cars[0].body.rotation.z);
+    // scene.updateMatrixWorld(true);
+
+    if(otoos[0]){
+        otoos[0].position.set(cars[0].body.position.x, cars[0].body.position.y - 3.5, cars[0].body.position.z - 2);
+        otoos[0].rotation.set(cars[0].body.rotation.x, cars[0].body.rotation.y, cars[0].body.rotation.z);
+    }
 
     for (var i = 1; i < otoos.length; i++) {
+
+        var position = new THREE.Vector3();
+        // position.getPositionFromMatrix( cars[i] );
+        // otoos[i].position.set(position.x, position.y - 8.5, position.z - 2);
+        // otoos[i].rotation.set(position.x, position.y - 8.5, position.z - 2);
+
         // cars[i]
-        otoos[i].position.set(cars[i].body.position.x, cars[i].body.position.y - 8.5, cars[i].body.position.z - 2);
+        otoos[i].position.set(cars[i].body.position.x, cars[i].body.position.y - 3.5, cars[i].body.position.z);
         otoos[i].rotation.set(cars[i].body.rotation.x, cars[i].body.rotation.y, cars[i].body.rotation.z);
+        // otoos[i].rotation.set(0, cars[i].body.rotation.y, 0);
     };
 
 }
 
 function lookAtAllTheseCarsMove(){
+
+    //A rudimentary AI, wich is called every second and sends a random direction and velocity to each car
 
     //to make all the cars move
     for (var i = 1; i < otoos.length; i++) {
@@ -554,8 +298,8 @@ function lookAtAllTheseCarsMove(){
         cars[i].wheel_bl_constraint.enableAngularMotor(2);
 
         var turnDirection = getRandomArbitary(-1,1);
-        cars[i].wheel_fl_constraint.configureAngularMotor(1, turnDirection* -Math.PI / 3, turnDirection* Math.PI / 3, -3, 200);   // --> right
-        cars[i].wheel_fr_constraint.configureAngularMotor(1, turnDirection* -Math.PI / 3, turnDirection* Math.PI / 3, -3, 200);   // --> right
+        cars[i].wheel_fl_constraint.configureAngularMotor(1, turnDirection* -Math.PI / 4, turnDirection* Math.PI / 4, -3, 200);   // --> right
+        cars[i].wheel_fr_constraint.configureAngularMotor(1, turnDirection* -Math.PI / 4, turnDirection* Math.PI / 4, -3, 200);   // --> right
         cars[i].wheel_fr_constraint.enableAngularMotor(2);
         cars[i].wheel_fl_constraint.enableAngularMotor(2);
     };

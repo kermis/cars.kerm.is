@@ -19,3 +19,14 @@ function generateRoomId() {
 function getRandomArbitary (min, max) {
     return Math.random() * (max - min) + min;
 }
+
+function reduceTo360(angle) {
+    var newAngle = angle;
+    while (newAngle <= 0) {
+        newAngle += 360
+    };
+    while (newAngle >= 360) {
+        newAngle -= 360
+    };
+    return newAngle;
+}
