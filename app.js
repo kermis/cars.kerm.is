@@ -72,9 +72,9 @@ io.sockets.on('connection', function(socket) {
         // io.sockets.emit('motionDataOut', data);
     })
 
-    socket.on('pull',function(data){
-		console.log('pull', data);
-		io.sockets.in(roomio).emit('pulled', data);
+    socket.on('move',function(data){
+		console.log('move', data);
+		io.sockets.in(roomio).emit('moved', data);
 		// io.sockets.emit('motionDataOut', data);
 	})
 });

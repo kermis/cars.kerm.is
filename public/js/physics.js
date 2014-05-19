@@ -237,14 +237,17 @@ function switchCam() {
     switch (camInUse) {
         case 0:
             sceneCam = camArr[1]
+            camera = camArr[1];
             camInUse = 1;
             break;
         case 1:
             sceneCam = camArr[2]
+            camera = camArr[2];
             camInUse = 2;
             break;
         case 2:
             sceneCam = camArr[0]
+            camera = camArr[0];
             camInUse = 0;
             break;
     }

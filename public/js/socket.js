@@ -2,6 +2,7 @@
 /////   Socket Stuff
 ////////////////////////////////////
 var room = generateRoomId();
+
 var socketController = {
     currentURL: window.location.href,
     loc: window.location,
@@ -25,7 +26,7 @@ var socketController = {
     connect: function() {
         socketController.socket.on('connect', this.socketConnected);
         socketController.socket.on('message', this.socketMessage);
-        socketController.socket.on('pulled', this.pulled);
+        socketController.socket.on('moved', this.command);
         socketController.socket.on('motionDataOut', this.socketMotionDataOut);
 
         this.updateInstructions();
@@ -43,9 +44,12 @@ var socketController = {
     socketMessage: function(data) {
         console.log('Incoming message:', data);
     },
-    pulled: function(data){
-        // console.log(data);
-        checkCollision();
+    command: function(data){
+        console.log(data);
+        if(cars[0]){
+            moveCar(cars[0], data.direction)
+        }
+        // console.log(data.direction)
     },
     socketMotionDataOut: function(data) {
         // console.log('Incoming motionData:', data);
@@ -53,18 +57,9 @@ var socketController = {
         // Tilt Front/Back [beta]
         // Direction [alpha]
 
-        $('.debug').html('<br>beta:' + data.beta);
-        // phoneObj.rotY = deg2rad(data.alpha);
-        var rotation = deg2rad(data.beta)-45;
-
-        rodPivot.rotation.x = rotation;
-
-        moveRodStrings('nothing');
-
-        // socketController.phoneObj.rotZ = deg2rad(data.gamma * 1.5);
-        // socketController.phoneObj.rotY = 0;
-
-        // updateRod();
+        if(cars[0] && data){
+            rotateCar(cars[0], data.beta || 0)
+        }
     },
     updateInstructions: function() {
         $('.urlFounded').html(this.currentURL);

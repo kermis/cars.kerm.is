@@ -15,20 +15,19 @@
         height: 100%;
         font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
         overflow: hidden;
-        background: #8ECCE3;
+        // background: #8ECCE3;
         -webkit-touch-callout: none;
         -webkit-user-select: none;
         -khtml-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
+        background: #1D1D1D;
     }
     #wrap {
-        width: 50%;
+        width: 100%;
         height: 100%;
-        left: 25%;
         position: absolute;
-        background: #a1582b;
     }
     .x2, .x {
         color: white;
@@ -40,85 +39,64 @@
     .a {
         display: none;
     }
-    input[type='range'] {
-        -webkit-appearance: none;
-        width: 90%;
-        height: 46px;
-        padding: 3px;
-        -webkit-border-radius: 15px;
-        border-radius: 15px;
-        border: none;
-        background: rgba(0, 0, 0, 0.5);
+    #accelerate {
+        right: 10%;
+        width: 30%;
+        height: 80%;
     }
-    input[type='range']::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        width: 60px;
-        height: 60px;
-        background: white;
-        border-radius: 100%;
-        -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-        -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    #reverse {
+        left: 5%;
+        top: 20%;
     }
     button {
-        // border-radius: 100%;
-        width: 100px;
-        height: 100px;
+        width: 40%;
+        height: 60%;
         border: none;
         font-size: 1.5rem;
-        background: rgba(255, 255, 255, 0.6);
         font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
         font-weight: 800;
-        color: rgba(0, 0, 0, 0.7);
-        -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-        -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-        width:90%;
-        height: 50%;
+        color: rgba(10, 10, 10, 0.7);
         position: absolute;
-    }
-    .round:hover {
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSI+CjxyZWN0IHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgZmlsbD0iIzhBOEE4QSI+PC9yZWN0Pgo8Y2lyY2xlIGN4PSIzIiBjeT0iNC4zIiByPSIxLjgiIGZpbGw9IiM4QThBOEEiPjwvY2lyY2xlPgo8Y2lyY2xlIGN4PSIzIiBjeT0iMyIgcj0iMS44IiBmaWxsPSJibGFjayI+PC9jaXJjbGU+CjxjaXJjbGUgY3g9IjEwLjUiIGN5PSIxMi41IiByPSIxLjgiIGZpbGw9IiNEN0Q3RDciPjwvY2lyY2xlPgo8Y2lyY2xlIGN4PSIxMC41IiBjeT0iMTEuMyIgcj0iMS44IiBmaWxsPSJibGFjayI+PC9jaXJjbGU+Cjwvc3ZnPg==");
+        -webkit-transform: perspective(60em) rotateX(-30deg);
+        /* Chrome, Safari, Opera */
+        transform: perspective(60em) rotateX(-30deg);
+        -webkit-transition: all 200ms;
+        -moz-transition: all 200ms;
+        -o-transition: all 200ms;
+        transition: all 200ms;
     }
     button:active {
-        -webkit-box-shadow:inset 0 0 5px rgba(0, 0, 0, 0.5);
-        -moz-box-shadow:inset 0 0 5px rgba(0, 0, 0, 0.5);
-        box-shadow:inset 0 0 5px rgba(0, 0, 0, 0.5);
+        -webkit-transform: rotateX(0deg);
+        /* Chrome, Safari, Opera */
+        transform: rotateX(0deg);
     }
-    #pull {
-        top: 20%;
-        width: 90% !important;
-        height: 70% !important;
-        margin-left:5% !important;
+    /*.button-holder{
+        width: 100%;
+        height: 100%;
+        -webkit-perspective:100%;
+        perspective:100%;
+    }*/
+    .x3{
+        color:white;
     }
     </style>
 </head>
 
 <body>
     <div id="wrap">
+
         <br>
         <div class="x2">Not Connected</div>
         <br>
         <div class="x"></div>
         <br>
-        <div class="x3 a"></div>
+        <div class="x3"></div>
 
-        <!--         <label for="rotation">Rotation</label>
-        <br>
-        <input type="range" min="0" value="180" max="360" id="rotation" name="rotation">
-
-        <br>
-        <br>
-
-        <label for="angle">Angle</label>
-        <br>
-        <input type="range" min="0" value="50" max="100" id="angle" name="angle">
-
-        <br>
-        <br>
-        <br>
-
-        <button class="round" id="drop">Drop</button> -->
-        <button class="round" id="pull">Pull up</button>
+        <div class="button-holder">
+            <button class="round" id="accelerate">Accelerate</button>
+        </div>
+        <button class="round" id="reverse">Brake / Reverse</button>
 
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -143,15 +121,25 @@
     }
     //var room = location.hash.replace('#','');
 
-    var motionD;
+    var motionD, direction, sending;
 
     $(function() {
 
-        $('.round').css('height', $('.round').width());
+        $('#accelerate').on('touchstart', function() {
+            direction = "forward"
+            sendMove();
+        });
 
-        $('.round').bind("tap", function(e) {
-            // alert( "tap!" );
-            socket.emit('pull',{hallo: 'wereld'})
+        $('#reverse').on('touchstart', function() {
+            direction = "back"
+            sendMove();
+        });
+
+        $('button').on('touchend', function() {
+            // socket.emit('move', {
+            //     direction: direction
+            // });
+            clearInterval(sending);
         });
 
 
@@ -199,11 +187,18 @@
 
     })
 
+    var sendMove = function() {
+        console.log(direction)
+        sending = setInterval(function() {
+            socket.emit('move', {
+                direction: direction
+            });
+        }, 125);
+    }
+
     setInterval(function() {
         socket.emit('motionData', motionD)
-        // socket.emit('message', motionD)
-        // $('.x3').html('motion data: ', motionD)
-    }, 1000/30)
+    }, 1000 / 20)
 
     /////// to get room from URL //////////
 

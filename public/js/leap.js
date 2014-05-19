@@ -30,11 +30,30 @@ var leapController = {
         try {
             var pointables = frame.hands;
 
-            if(count > 10 || 1){
+            if(count > 10){
 
-                var rotation = (rad2deg(pointables[0].pitch())-45)*1.5;
-                rodPivot.rotation.x = deg2rad(rotation);
-                moveRodStrings('nothing');
+                /* Forward - Backwards */
+                var rotationX = (rad2deg(pointables[0].pitch()));
+
+                /* Left -Right */
+                var rotationZ = -(rad2deg(pointables[0].roll()));
+                $('.info').html('rotZ ->' + rotationZ);
+
+
+                if(cars[0]){
+
+                    rotateCar(cars[0], rotationZ)
+
+                    if(rotationX < -10){
+                        moveCar(cars[0], 'forward')
+                    }else if(rotationX > 20){
+                        moveCar(cars[0], 'back')
+                    }else{
+                        stopCarAll(cars[0])
+
+                    }
+                }
+                    // console.log(rotationZ);
                 // $('.debug').html(rotation);
                 // count = 0;
 

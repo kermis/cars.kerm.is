@@ -14,6 +14,7 @@ function controlCar(ev, car) {
             // Right
             //  MATH.PI /3 -> 60°;
             //  MATH.PI /2 -> 90°;
+            //  MATH.PI /4 -> 45°;
             car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, -3, 200);
             car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, -3, 200);
 
@@ -54,6 +55,56 @@ function controlCar(ev, car) {
             init();
             break;
     }
+}
+
+function moveCar(car, direction){
+    var multiplier = 1;
+    switch(direction){
+        case 'forward':
+            multiplier = 1;
+            break;
+        case 'back':
+            multiplier = -1
+            break;
+    }
+    car.wheel_bl_constraint.configureAngularMotor(2, 1, 0, multiplier * velocity, 2000);
+    car.wheel_br_constraint.configureAngularMotor(2, 1, 0, multiplier *   velocity, 2000);
+
+    car.wheel_bl_constraint.enableAngularMotor(2);
+    car.wheel_br_constraint.enableAngularMotor(2);
+}
+
+function stopCar(car){
+    car.wheel_bl_constraint.disableAngularMotor(2);
+    car.wheel_br_constraint.disableAngularMotor(2);
+}
+
+function rotateCar(car, angle){
+
+    if(angle < -8){
+        // // configureAngularMotor(which, low_angle, high_angle, velocity, max_force)
+        car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, 3, 200);
+        car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, 3, 200);
+
+        car.wheel_fl_constraint.enableAngularMotor(1);
+        car.wheel_fr_constraint.enableAngularMotor(1);
+    }else if(angle > 8){
+        car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, -3, 200);
+        car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, -3, 200);
+
+        car.wheel_fl_constraint.enableAngularMotor(1);
+        car.wheel_fr_constraint.enableAngularMotor(1);
+    }else{
+        car.wheel_fl_constraint.disableAngularMotor(1);
+        car.wheel_fr_constraint.disableAngularMotor(1);
+    }
+}
+
+function stopCarAll(car){
+    car.wheel_fl_constraint.disableAngularMotor(1);
+    car.wheel_fr_constraint.disableAngularMotor(1);
+    car.wheel_bl_constraint.disableAngularMotor(2);
+    car.wheel_br_constraint.disableAngularMotor(2);
 }
 
 function stopCar(ev, car) {

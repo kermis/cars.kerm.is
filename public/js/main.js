@@ -9,7 +9,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 //three.js vars
 var container, stats;
 
-var camera, sceneCam, controls, scene, renderer, POVcamera;
+var camera, sceneCam, controls, scene, renderer, composer, POVcamera;
 
 var overViewCam;
 var overViewCamHolder;
@@ -29,18 +29,31 @@ $(function() {
     queue.on("progress", handleProgress, this);
     queue.loadManifest([
         // {id: "physijs_worker",src: "/js/libs/physijs_worker.js"},
-        {id: "ammo",src: "/js/libs/ammo.js"},
-        {id: "landscape",src: "/models/landscape.js"},
-        {id: "physijs_worker",src: "/models/botsotoo.js"},
-        {id: "bump",src: "/sound/bump.mp3"},
-        {id: "tuut",src: "/sound/tuut2.mp3"},
-        {id: "music",src: "/sound/jump.mp3"}
-        ]);
+        {
+            id: "ammo",
+            src: "/js/libs/ammo.js"
+        }, {
+            id: "landscape",
+            src: "/models/landscape2.js"
+        }, {
+            id: "physijs_worker",
+            src: "/models/botsotoo.js"
+        }, {
+            id: "bump",
+            src: "/sound/bump.mp3"
+        }, {
+            id: "tuut",
+            src: "/sound/tuut2.mp3"
+        }, {
+            id: "music",
+            src: "/sound/jump.mp3"
+        }
+    ]);
 
 
 })
 
-function handleComplete(){
+function handleComplete() {
     $('.overlay').delay(10).fadeOut('slow');
     init();
     animate();
@@ -48,9 +61,10 @@ function handleComplete(){
     // createjs.Sound.play("music", {loop:-1});
 }
 
-function handleProgress(e){
+function handleProgress(e) {
     var percentLoaded = Math.round(e.loaded * 100);
-    $('.percentLoaded').html(percentLoaded+ ' %');
+    $('.percentLoaded').html(percentLoaded + ' %');
+    $('.progress').css('width', percentLoaded + '%')
 }
 
 
@@ -111,6 +125,36 @@ function init() {
     renderer.outshift = 3.0; // makes the scene come nearer
     renderer.setSize(window.innerWidth, window.innerHeight);
 
+
+    /*
+    Effects composer
+     */
+    // composer = new THREE.EffectComposer(renderer);
+    // var renderModel = new THREE.RenderPass(scene, camera);
+    // renderModel.renderToScreen = true;
+    // composer.addPass(renderModel);
+
+    // hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader);
+    //     // vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader);
+    //     var bluriness = 5;
+
+    //     hblur.uniforms['h'].value = bluriness / window.innerWidth;
+    //     // vblur.uniforms['v'].value = bluriness / window.innerHeight;
+    //     // hblur.uniforms['r'].value = vblur.uniforms['r'].value = 0.5;
+
+    //     composer.addPass(hblur);
+    // composer.addPass(vblur);
+
+    // composer.addPass(copyPass);
+    // copyPass.renderToScreen = true;
+
+
+    /*
+    /Effects composer
+     */
+
+
+
     window.addEventListener('resize', onWindowResize, false);
 
     container = document.getElementById('container');
@@ -122,6 +166,60 @@ function init() {
     stats.domElement.style.zIndex = 100;
     container.appendChild(stats.domElement);
     //
+
+    // initPostProcessing();
+}
+
+function initPostProcessing() {
+
+    composer = new THREE.EffectComposer(renderer);
+    renderModel = new THREE.RenderPass(scene, camera);
+    renderModel.renderToScreen = false;
+    composer.addPass(renderModel);
+
+    // var effectDotScreen = new THREE.DotScreenPass(
+    //     new THREE.Vector2(0, 0), 0.5, 0.8);
+    // effectDotScreen.renderToScreen = true;
+    // composer.addPass(effectDotScreen);
+
+    var shaderVignette = THREE.VignetteShader;
+    var effectVignette = new THREE.ShaderPass(shaderVignette);
+    // larger values = darker closer to center
+    // darkness < 1  => lighter edges
+    effectVignette.uniforms["offset"].value = 0.7;
+    effectVignette.uniforms["darkness"].value = 0.8;
+    effectVignette.renderToScreen = true;
+    composer.addPass(effectVignette);
+
+
+    // var bokehPass = new THREE.BokehPass( scene, camera, {
+    //         focus:      1.0,
+    //         aperture:   0.0025,
+    //         maxblur:    5.0,
+
+    //         width: window.innerWidth,
+    //         height: window.innerHeight
+    //     } );
+
+    // bokehPass.renderToScreen = true;
+
+    // composer.addPass(bokehPass);
+
+
+
+    // hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader, 0);
+    // vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader, 0);
+    // var bluriness = 5;
+
+    // hblur.uniforms['h'].value = bluriness / window.innerWidth;
+    // vblur.uniforms['v'].value = bluriness / window.innerHeight;
+    // hblur.uniforms['r'].value = vblur.uniforms['r'].value = 0.5;
+
+    // composer.addPass(hblur);
+    // composer.addPass(vblur);
+
+
+
 }
 
 function onWindowResize() {
@@ -156,6 +254,9 @@ function animate() {
 function render() {
 
     renderer.render(scene, sceneCam);
+    // renderer.clear();
+    // composer.render();
+
     stats.update();
 
     sky.rotation.y += 0.01;
@@ -226,6 +327,7 @@ function camConfig() {
     //
     camArr = [camera, POVcamera, overViewCam]
 
-     sceneCam = camera;
+    // camera = mainCamera;
+    sceneCam = camera;
 
 }

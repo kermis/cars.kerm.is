@@ -3,17 +3,17 @@
 <head>
     <title>Cars.kerm.is</title>
     <style>
-    html,body{
+    html, body {
         margin: 0;
         padding: 0;
         width: 100%;
         height: 100%;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
     }
-    canvas{
+    canvas {
         position: absolute;
     }
-    .info{
+    .info {
         position: absolute;
         width: 100%;
         text-align: center;
@@ -22,11 +22,11 @@
         font-weight: 100;
         text-shadow: 0 0 5px #000000;
     }
-    .info h1, .info h2{
+    .info h1, .info h2 {
         line-height: 80%;
         font-weight: 100;
     }
-    .overlay{
+    .overlay {
         position: absolute;
         width: 100%;
         height: 100%;
@@ -34,25 +34,38 @@
         background: #EFEFEF;
         z-index: 1000;
     }
-    .percentLoaded{
+    .percentLoaded {
         position: absolute;
         text-align: center;
-        font-size: 2em;
-        width: 10%;
-        left: 45%;
-        top: 30%;
+        font-size: 8em;
+        width: 100%;
+        left: 0;
+        top: 20%;
         z-index: 1001;
     }
+    .progress{
+        width: 0%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #6588D6;
+        z-index: 1000
+    }
     </style>
+    </script>
 </head>
 
 <body>
     <div class="overlay">
         <div class="percentLoaded">0%</div>
+        <div class="progress"></div>
     </div>
     <div class="info">
-    <h2>Use your arrow keys to steer</h2>
-    <h2>Press <strong>C</strong> To switch cam</h2>
+        <h2>Use your arrow keys to steer</h2>
+        <h2>Press
+            <strong>C</strong>To switch cam</h2>
+        <div class="instruct"></div>
     </div>
 
     <canvas id="canvas"></canvas>
@@ -60,13 +73,31 @@
 
     <!-- Three.js stuff -->
     <script src='js/libs/three.min.js'></script>
-    <!-- <script src="vendor/require.js/require.js"></script> -->
     <!-- <script src="js/libs/ProtrudingAnaglyphWebGLRenderer.js"></script> -->
     <script src="vendor/three.js/examples/js/Detector.js"></script>
     <script src="vendor/threex.windowresize.js"></script>
-<!--     <script src="js/libs/TrackballControls.js"></script>
- -->    <script src="js/libs/stats.min.js"></script>
+
+    <!-- Effects -->
+    <script src="js/libs/effectsComposer.js"></script>
+    <script src="js/libs/RenderPass.js"></script>
+    <script src="js/libs/BloomPass.js"></script>
+    <script src="js/libs/ShaderPass.js"></script>
+    <script src="js/libs/MaskPass.js"></script>
+    <script src="js/libs/CopyShader.js"></script>
+
+    <script src="js/libs/DotScreenShader.js"></script>
+    <script src="js/libs/DotScreenPass.js"></script>
+
+    <script src="js/libs/BokehShader.js"></script>
+    <script src="js/libs/BokehPass.js"></script>
+
+    <script src="js/libs/HorizontalTiltShiftShader.js"></script>
+    <script src="js/libs/VignetteShader.js"></script>
+
+    <!-- Other libraries -->
+    <script src="js/libs/stats.min.js"></script>
     <script src="js/libs/qr.min.js"></script>
+
 
     <!-- Socket stuff -->
     <script src="js/libs/socket.io.min.js"></script>
@@ -84,8 +115,6 @@
 
     <!-- Physics stuff -->
     <script src="js/libs/physi.js"></script>
-    <!-- <script src="js/libs/cannon.min.js"></script> -->
-    <!-- <script src="js/libs/oimo/Oimo.js"></script> -->
 
     <!-- our own JS -->
     <script src="js/helpers.js"></script>
