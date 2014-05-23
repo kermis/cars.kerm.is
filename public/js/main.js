@@ -22,6 +22,14 @@ var sky;
 
 var otoo;
 
+var playing = false;
+
+var mapCamera, mapWidth = 240, mapHeight = 160; // w/h should match div dimensions
+
+var playingWithLeap = false;
+var playingWithPhone = false;
+var playingWithKeys = false;
+
 $(function() {
     var queue = new createjs.LoadQueue();
     queue.installPlugin(createjs.Sound);
@@ -86,7 +94,6 @@ function init() {
     camConfig();
 
 
-
     //landscape
     var landscape = new THREE.ObjectLoader();
     landscape.load('/models/landscape2.js', function(mesh) {
@@ -97,22 +104,27 @@ function init() {
 
     });
 
-    setGround();
-    makeACar();
+    physics.setGround();
+    physics.makeACar();
 
-    makeNPCcar(car);
+    physics.makeNPCcar(car);
 
     //
     // lights
-    var light = new THREE.HemisphereLight(0xFFC8C8, 1.5)
+    // var light = new THREE.HemisphereLight(0xFFC8C8, 1.5)
+    var light = new THREE.HemisphereLight(0xB98EFA, 0.8)
     // var light = new THREE.HemisphereLight(0xFFFFFF, 1.2)
     scene.add(light)
 
+    var light2 = new THREE.HemisphereLight( 0x404040, 0.5 ); // soft white light
+scene.add( light2 );
+
     //sky
     var geometrySky = new THREE.SphereGeometry(4500, 32, 32)
-    var materialSky = new THREE.MeshBasicMaterial()
-    materialSky.map = THREE.ImageUtils.loadTexture('../img/sky.jpg')
-    materialSky.side = THREE.BackSide
+    var materialSky = new THREE.MeshBasicMaterial({color: 0x261d32})
+    // materialSky.map = THREE.ImageUtils.loadTexture('../img/sky.jpg')
+    materialSky.side = THREE.BackSide;
+
     sky = new THREE.Mesh(geometrySky, materialSky)
     scene.add(sky);;
 
@@ -124,35 +136,7 @@ function init() {
     renderer.outstretch = 2.0; // stretches the apparent z-direction
     renderer.outshift = 3.0; // makes the scene come nearer
     renderer.setSize(window.innerWidth, window.innerHeight);
-
-
-    /*
-    Effects composer
-     */
-    // composer = new THREE.EffectComposer(renderer);
-    // var renderModel = new THREE.RenderPass(scene, camera);
-    // renderModel.renderToScreen = true;
-    // composer.addPass(renderModel);
-
-    // hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader);
-    //     // vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader);
-    //     var bluriness = 5;
-
-    //     hblur.uniforms['h'].value = bluriness / window.innerWidth;
-    //     // vblur.uniforms['v'].value = bluriness / window.innerHeight;
-    //     // hblur.uniforms['r'].value = vblur.uniforms['r'].value = 0.5;
-
-    //     composer.addPass(hblur);
-    // composer.addPass(vblur);
-
-    // composer.addPass(copyPass);
-    // copyPass.renderToScreen = true;
-
-
-    /*
-    /Effects composer
-     */
-
+    renderer.autoclear = false;
 
 
     window.addEventListener('resize', onWindowResize, false);
@@ -243,7 +227,9 @@ function animate() {
 
     requestAnimationFrame(animate);
 
-    scene.simulate();
+    if(playing){
+        scene.simulate();
+    }
 
     // }
     // controls.update();
@@ -253,22 +239,23 @@ function animate() {
 
 function render() {
 
-    renderer.render(scene, sceneCam);
+    // renderer.render(scene, sceneCam);
     // renderer.clear();
     // composer.render();
 
     stats.update();
 
-    sky.rotation.y += 0.01;
+    // sky.rotation.y += 0.001;
 
     if (otoos[0]) {
         setOtooPosition();
     }
 
-    if (otoo) {
-        // otoo.rotation.y += 0.01;
+    var w = window.innerWidth, h = window.innerHeight;
 
-    }
+    renderer.clear();
+    renderer.render( scene, sceneCam );
+
 
 }
 
@@ -319,8 +306,8 @@ function camConfig() {
 
     scene.add(overViewCamHolder)
     overViewCamHolder.position.y = 630;
-    // overViewCamHolder.position.x = 500;
-    overViewCamHolder.position.x = 700;
+    overViewCamHolder.position.x = 500;
+    // overViewCamHolder.position.x = 700;
     overViewCamHolder.position.z = -30;
     // overViewCamHolder.rotation.y = 1.570796;
     overViewCamHolder.add(overViewCam)
@@ -328,6 +315,6 @@ function camConfig() {
     camArr = [camera, POVcamera, overViewCam]
 
     // camera = mainCamera;
-    sceneCam = camera;
+    sceneCam = POVcamera;
 
 }

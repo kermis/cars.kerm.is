@@ -8,7 +8,11 @@ var socketController = {
     loc: window.location,
     room: '',
     socket: io.connect(this.currentURL),
-    phoneObj: { rotX: 0, rotY: 0, rotZ:0},
+    phoneObj: {
+        rotX: 0,
+        rotY: 0,
+        rotZ: 0
+    },
     init: function() {
 
 
@@ -38,16 +42,16 @@ var socketController = {
             msg: 'client joined room with ID ' + room
         });
         if (debug) {
-            console.log('joined room '+ room);
+            console.log('joined room ' + room);
         }
     },
     socketMessage: function(data) {
         console.log('Incoming message:', data);
     },
-    command: function(data){
+    command: function(data) {
         console.log(data);
-        if(cars[0]){
-            moveCar(cars[0], data.direction)
+        if (cars[0]) {
+            carController.moveCar(cars[0], data.direction)
         }
         // console.log(data.direction)
     },
@@ -57,27 +61,36 @@ var socketController = {
         // Tilt Front/Back [beta]
         // Direction [alpha]
 
-        if(cars[0] && data){
-            rotateCar(cars[0], data.beta || 0)
+        if (cars[0] && data) {
+            carController.rotateCar(cars[0], data.beta || 0)
+        }
+
+        if (!playing) {
+            playing = true;
+            $('.info').fadeOut();
+
         }
     },
     updateInstructions: function() {
         $('.urlFounded').html(this.currentURL);
-        $('.roomGenerated').html(this.room);
         $('.instruct').fadeIn('fast')
 
-        var genURL = this.currentURL+'/mobile/#' + room;
-        // Render the QR code on a newly created img element
-        var img = qr.image(genURL);
-        $('.instruct').html(img); // Re-render the QR code on an existing element
-        // $('.instruct').parent().css('text-align','center')
-        $('.instruct').attr('style','background-color:white; padding: 15px 0 0 15px; position: absolute; left:200px;')
-        qr.image({
-            image: img,
-            value: genURL,
-            size: 5,
-            level: 'H'
+        var genURL = this.currentURL + '/mobile/#' + room;
+
+        // <span class="go_to_site">http://c.kerm.is/</span>
+        //             <br>
+        //              and enter <span class="room_id"></span>
+        $('.room_id').html(room);
+
+        $('.instruct').qrcode({
+            text: genURL,
+            render: "canvas", // 'canvas' or 'table'. Default value is 'canvas'
+            background: "#000000",
+            foreground: "#FFFFFF",
+            width: 200,
+            height: 200
         });
+
     }
 
 }

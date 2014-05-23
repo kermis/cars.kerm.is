@@ -8,23 +8,31 @@
         padding: 0;
         width: 100%;
         height: 100%;
-        font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+        /*font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;*/
+        font-family: bebas-neue, sans-serif;
+        -webkit-font-smoothing: antialiased;
     }
     canvas {
         position: absolute;
     }
     .info {
         position: absolute;
+        height: 60%;
+        top: 20%;
         width: 100%;
         text-align: center;
         color:white;
         z-index: 100;
-        font-weight: 100;
-        text-shadow: 0 0 5px #000000;
+        font-weight: 200;
+        /*text-shadow: 0 0 5px #000000;*/
+        background: #000000;
+        /*display: none;*/
     }
     .info h1, .info h2 {
-        line-height: 80%;
-        font-weight: 100;
+        font-weight: 200;
+    }
+    .info h1 {
+        font-size: 28pt;
     }
     .overlay {
         position: absolute;
@@ -43,7 +51,7 @@
         top: 20%;
         z-index: 1001;
     }
-    .progress{
+    .progress {
         width: 0%;
         height: 100%;
         position: absolute;
@@ -52,8 +60,87 @@
         background: #6588D6;
         z-index: 1000
     }
+    button {
+        width: 28%;
+        height: 60%;
+        padding: 0;
+        margin: 2%;
+        font-size: 1rem;
+        background: transparent;
+        background: rgba(0, 0, 0, 0);
+        color: white;
+        cursor: pointer;
+        border: none;
+        margin-top: 0;
+        top: 0;
+        /*font-family: serif;*/
+    }
+    button p {
+        font-family: bebas-neue, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        font-size: 16pt;
+    }
+    button:hover {
+        /*background: #EFEFEF;*/
+    }
+    button:active {
+    }
+    .chose {
+        display: none;
+    }
+    img {
+        max-width: 100%;
+        max-height: 60%;
+        margin-top: 10%;
+    }
+    .container {
+        max-width: 50%;
+    }
+    .text{
+        font-size: 16pt;
+        line-height: 30pt;
+    }
+    .pull-right {
+        float: right;
+        margin-right: 20%;
+    }
+    .pull-left {
+        float: left;
+        margin-left: 20%;
+    }
+    .chose_leap .pull-left{
+        margin-left: 10%;
+    }
+    .chose_leap .pull-right{
+        margin-right: 10%;
+    }
+    .play {
+        background: #FFFFFF;
+        color: black;
+        padding: 10px;
+        font-size: 16pt;
+        font-family: bebas-neue, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        border-radius: 10px;
+    }
+    .instruct canvas{
+        position: relative;
+    }
+    .chose_keys img{
+        max-height: 60px;
+    }
+    .chose_keys h2{
+        float: left;
+        width: 33%;
+    }.chose_keys .play{
+        margin-top: 40px;
+    }
+    img.arrow{
+        max-height: 40px;
+        margin-bottom: 10px;
+    }
     </style>
-    </script>
+    <script src="//use.edgefonts.net/bebas-neue.js"></script>
 </head>
 
 <body>
@@ -62,11 +149,71 @@
         <div class="progress"></div>
     </div>
     <div class="info">
-        <h2>Use your arrow keys to steer</h2>
-        <h2>Press
-            <strong>C</strong>To switch cam</h2>
-        <div class="instruct"></div>
+        <h1 class="title">How do you want to play?</h1>
+        <div class="back-button"><button>Back</button></div>
+        <div class="buttons">
+            <button id="leap" class="choose_button">
+                <p>With the Leap Motion</p>
+                <img src="http://i.imgur.com/WHWs0x4.png">
+            </button>
+            <button id="socket" class="choose_button">
+                <p>With my modern smartphone</p>
+                <img src="http://i.imgur.com/Op5kcZA.png">
+            </button>
+            <button id="keys" class="choose_button">
+                <p>With my arrow keys</p>
+                <img src="http://i.imgur.com/1V7xZDF.png">
+            </button>
+        </div>
+
+        <div class="chose chose_keys">
+            <h2><img src="http://i.imgur.com/RQ6THEI.png"/>&nbsp;&nbsp;<img class="arrow" src="http://i.imgur.com/OJSXmDc.png">&nbsp;&nbsp;<img src="http://i.imgur.com/vqhEONV.png"></h2>
+            <h2><img src="http://i.imgur.com/m73QtqH.png">&nbsp;&nbsp;<img class="arrow" src="http://i.imgur.com/OJSXmDc.png">&nbsp;&nbsp;<img src="http://i.imgur.com/r7oAHe2.png"></h2>
+            <h2><img src="http://i.imgur.com/u1Ax1bf.png">&nbsp;&nbsp;<img class="arrow" src="http://i.imgur.com/OJSXmDc.png">&nbsp;&nbsp;<img src="http://i.imgur.com/H7gi13W.png"></h2>
+            <br>
+            <button class="play">Play</button>
+        </div>
+        <div class="chose chose_socket">
+            <div class="container pull-left">
+                <h2>Scan the QR Code:
+                    <br><br>
+                    <div class="instruct">
+
+                    </div>
+                </h2>
+            </div>
+            <div class="container pull-right text">
+                <h2>Or go to
+                <br>
+                    <span class="go_to_site">http://c.kerm.is/</span>
+                    <br>
+                     and enter <br><span class="room_id"></span>
+                </h2>
+            </div>
+        </div>
+        <div class="chose chose_leap">
+            <div class="container pull-left">
+                <video width="320" height="240" autoplay loop>
+                    <source src="videos/Hand-B-O.mp4" type="video/mp4">
+                        <source src="videos/Hand-B-O.webm" type="video/webm">
+                </video>
+                <h2>Accelerate</h2>
+            </div>
+            <div class="container pull-right">
+                <video width="320" height="240" autoplay loop>
+                    <source src="videos/Hand-L-R.mp4" type="video/mp4">
+                        <source src="videos/Hand-L-R.webm" type="video/webm">
+                </video>
+                <h2>Steer</h2>
+            </div>
+            <br>
+            <br>
+            <button class="play">Play</button>
+        </div>
+
     </div>
+
+    <div id="mapCanvas" style="position: absolute; left:100px; top:100px; width:320px; height:240px;"></div>
 
     <canvas id="canvas"></canvas>
     <div id="container"></div>
@@ -94,9 +241,6 @@
     <script src="js/libs/HorizontalTiltShiftShader.js"></script>
     <script src="js/libs/VignetteShader.js"></script>
 
-    <!-- Other libraries -->
-    <script src="js/libs/stats.min.js"></script>
-    <script src="js/libs/qr.min.js"></script>
 
 
     <!-- Socket stuff -->
@@ -108,6 +252,10 @@
     <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
     <script src="js/libs/leap-0.5.0.min.js"></script>
     <script src="js/libs/leapController.js"></script>
+
+    <!-- Other libraries -->
+    <script src="js/libs/stats.min.js"></script>
+    <script src="js/libs/qr.min.js"></script>
 
     <!-- Preload and sound stuff -->
     <script src="//code.createjs.com/preloadjs-0.4.1.min.js"></script>
@@ -125,4 +273,6 @@
     <script src="js/main.js"></script>
     <script src="js/leap.js"></script>
     <script src="js/socket.js"></script>
+
+    <script src="js/UI.js"></script>
 </body>
