@@ -84,18 +84,25 @@ var carBuilder = {
             1000
         );
 
+        car.body.name = 'car-body';
+
         car.bodyRotated = new Physijs.BoxMesh(
             // new THREE.CubeGeometry(5, 6, 14),
             new THREE.CubeGeometry(4, 5, 14),
             car_material,
             1000
         );
+
+        car.bodyRotated.name = 'car-body-rotated';
+
         car.bodyTop = new Physijs.BoxMesh(
             // new THREE.CubeGeometry(12, 3, 14),
             new THREE.CubeGeometry(10, 1, 10),
             car_material,
             1000
         );
+
+        car.bodyTop.name = 'car-body-top';
 
         car.bodyTop.position.y = 10;
         car.bodyRotated.position.y = 2;
@@ -296,5 +303,7 @@ var carBuilder = {
             y: 0,
             z: 0
         });
+
+        car.wheel_fl.name = car.wheel_fr.name = car.wheel_bl.name = car.wheel_br.name = 'wheel';
     }
 }

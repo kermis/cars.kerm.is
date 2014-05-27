@@ -58,6 +58,7 @@ var carController = {
         }
     },
     moveCar: function(car, direction) {
+        console.log(direction)
         var multiplier = 1;
         switch (direction) {
             case 'forward':
@@ -81,14 +82,14 @@ var carController = {
 
         if (angle < -8) {
             // // configureAngularMotor(which, low_angle, high_angle, velocity, max_force)
-            car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, 3, 200);
-            car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, 3, 200);
+            car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 6, Math.PI / 6, 3, 200);
+            car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 6, Math.PI / 6, 3, 200);
 
             car.wheel_fl_constraint.enableAngularMotor(1);
             car.wheel_fr_constraint.enableAngularMotor(1);
         } else if (angle > 8) {
-            car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, -3, 200);
-            car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, -3, 200);
+            car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 6, Math.PI / 6, -3, 200);
+            car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 6, Math.PI / 6, -3, 200);
 
             car.wheel_fl_constraint.enableAngularMotor(1);
             car.wheel_fr_constraint.enableAngularMotor(1);

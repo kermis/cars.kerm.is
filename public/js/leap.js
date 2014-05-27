@@ -33,23 +33,25 @@ var leapController = {
             if(count > 10){
 
                 /* Forward - Backwards */
-                var rotationX = (rad2deg(pointables[0].pitch()));
+                var rotationX = rad2deg(pointables[0].pitch());
 
                 /* Left -Right */
                 var rotationZ = -(rad2deg(pointables[0].roll()));
-                $('.info').html('rotZ ->' + rotationZ);
+                // $('.info').html('rotZ ->' + rotationZ);
+                // console.log(rotationZ)
 
 
                 if(cars[0]){
 
-                    rotateCar(cars[0], rotationZ)
+                    carController.rotateCar(cars[0], rotationZ)
+                    // console.log(rotationX, rotationZ);
 
                     if(rotationX < -10){
-                        moveCar(cars[0], 'forward')
+                        carController.moveCar(cars[0], 'forward')
                     }else if(rotationX > 20){
-                        moveCar(cars[0], 'back')
+                        carController.moveCar(cars[0], 'back')
                     }else{
-                        stopCarAll(cars[0])
+                        carController.stopCarAll(cars[0])
 
                     }
                 }

@@ -70,9 +70,10 @@ var physics = {
 
 
         function carCollisionHandler(otherObjects, relativeVelocity, relativeRotation, contactNormal) {
-            console.log('bump')
-            // createjs.Sound.stop("bump");
-            createjs.Sound.play("bump");
+            var otName = otherObjects.name;
+            if(otName != 'wheel'){
+                createjs.Sound.play("bump");
+            }
         };
 
         document.addEventListener('keydown', function(e) {
@@ -112,6 +113,8 @@ var physics = {
             0
         );
 
+        mesh.name = 'barrier';
+
         mesh.position.set(xPosition, 0, zPosition);
         mesh.rotation.set(0, rotation, 0)
 
@@ -140,6 +143,8 @@ var physics = {
                 camInUse = 0;
                 break;
         }
+
+        initPostProcessing();
     }
 
 

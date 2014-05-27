@@ -47,10 +47,16 @@ var socketController = {
     },
     socketMessage: function(data) {
         console.log('Incoming message:', data);
+        console.log(data.command)
+        if(data.command == 'stop'){
+            playing = false;
+        }else if(data.command == 'start'){
+            playing = true;
+        }
     },
     command: function(data) {
         console.log(data);
-        if (cars[0]) {
+        if (cars[0] && playingWithPhone) {
             carController.moveCar(cars[0], data.direction)
         }
         // console.log(data.direction)
@@ -61,11 +67,11 @@ var socketController = {
         // Tilt Front/Back [beta]
         // Direction [alpha]
 
-        if (cars[0] && data) {
+        if (cars[0] && data && playingWithPhone) {
             carController.rotateCar(cars[0], data.beta || 0)
         }
 
-        if (!playing) {
+        if (!playing && playingWithPhone) {
             playing = true;
             $('.info').fadeOut();
 

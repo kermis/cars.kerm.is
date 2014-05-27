@@ -8,6 +8,11 @@
     <meta name="viewport" content="initial-scale=1, user-scalable=no">
 
     <style type="text/css">
+    *, *:before, *:after {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
     body, html {
         margin:0;
         padding: 0;
@@ -15,7 +20,7 @@
         height: 100%;
         font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
         overflow: hidden;
-        // background: #8ECCE3;
+        /*// background: #8ECCE3;*/
         -webkit-touch-callout: none;
         -webkit-user-select: none;
         -khtml-user-select: none;
@@ -46,17 +51,19 @@
     }
     #reverse {
         left: 5%;
-        top: 20%;
+        top: 0%;
     }
     button {
         width: 40%;
-        height: 60%;
+        height: 70%;
         border: none;
         font-size: 1.5rem;
         font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
         font-weight: 800;
+        z-index: 100;
         color: rgba(10, 10, 10, 0.7);
         position: absolute;
+        top: 0;
         background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSI+CjxyZWN0IHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgZmlsbD0iIzhBOEE4QSI+PC9yZWN0Pgo8Y2lyY2xlIGN4PSIzIiBjeT0iNC4zIiByPSIxLjgiIGZpbGw9IiM4QThBOEEiPjwvY2lyY2xlPgo8Y2lyY2xlIGN4PSIzIiBjeT0iMyIgcj0iMS44IiBmaWxsPSJibGFjayI+PC9jaXJjbGU+CjxjaXJjbGUgY3g9IjEwLjUiIGN5PSIxMi41IiByPSIxLjgiIGZpbGw9IiNEN0Q3RDciPjwvY2lyY2xlPgo8Y2lyY2xlIGN4PSIxMC41IiBjeT0iMTEuMyIgcj0iMS44IiBmaWxsPSJibGFjayI+PC9jaXJjbGU+Cjwvc3ZnPg==");
         -webkit-transform: perspective(60em) rotateX(-30deg);
         /* Chrome, Safari, Opera */
@@ -77,8 +84,27 @@
         -webkit-perspective:100%;
         perspective:100%;
     }*/
-    .x3{
+    .x3 {
         color:white;
+    }
+    #overlay {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        font-size: 3em;
+        font-weight: 800;
+        color: white;
+        display: none;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: red;
+        z-index: 1010;
+        text-align: center;
+        display: block;
+        padding: 10%;
+        -webkit-transform: perspective(1em) rotateX(0);
+        transform: perspective(1em) rotateX(0);
     }
     </style>
 </head>
@@ -99,13 +125,18 @@
         <button class="round" id="reverse">Brake / Reverse</button>
 
     </div>
+    <div id='overlay'>
+        Please rotate your phone to play the game
+    </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="http://code.createjs.com/soundjs-0.5.2.min.js"></script>
     <script src="/libs/tappy.js"></script>
     <script src="/js/libs/socket.io.min.js"></script>
     <script>
     // var socket = io.connect('http://192.168.1.13:3000');
     var currentURL = window.location.href;
     var loc = window.location;
+    var angleOffset = 1;
     console.log(loc);
     if (loc.port != undefined) {
         var currentURL = loc.protocol + '//' + loc.hostname + ':' + loc.port;
@@ -121,11 +152,19 @@
     }
     //var room = location.hash.replace('#','');
 
+    if (!room) {
+
+        room = 'EmptyRoom' + Math.round(Math.random() * 100000)
+    }
+
     var motionD, direction, sending;
 
     $(function() {
 
         $('#accelerate').on('touchstart', function() {
+            createjs.Sound.play("eng1", {
+                loop: -1
+            });
             direction = "forward"
             sendMove();
         });
@@ -136,6 +175,7 @@
         });
 
         $('button').on('touchend', function() {
+            createjs.Sound.stop();
             // socket.emit('move', {
             //     direction: direction
             // });
@@ -172,11 +212,11 @@
         }
 
         function handleMotion(event) {
-            /*$('.x').html('<h5>Motion:</h5><br>gamma: ' + event.gamma + ' <br>beta:' + event.beta + ' <br> alpha:' + event.alpha);*/
+            // $('.x2').html('<h5><br>beta:' + event.beta + ' <br></h5>');
 
             motionD = {
                 gamma: event.gamma,
-                beta: event.beta,
+                beta: event.beta * angleOffset,
                 alpha: event.alpha
             }
             // socket.emit('message', {
@@ -185,8 +225,35 @@
 
         }
 
+        initSound();
     })
 
+    function initSound() {
+
+        console.log('test');
+
+        if (!createjs.Sound.initializeDefaultPlugins()) {
+            return;
+        }
+
+        var audioPath = "/../sound/";
+        var manifest = [{
+            id: "eng1",
+            src: "eng1.wav"
+        }, {
+            id: "eng2",
+            src: "eng2.wav"
+        }];
+
+        createjs.Sound.addEventListener("fileload", handleLoad);
+        createjs.Sound.registerManifest(manifest, audioPath);
+    }
+
+    function handleLoad(event) {
+
+
+
+    }
     var sendMove = function() {
         console.log(direction)
         sending = setInterval(function() {
@@ -219,6 +286,60 @@
         }
         return color;
     }
+
+    $(window).bind('orientationchange', function(e, onready) {
+        if (onready) {
+            // alert(window.orientation)
+        }
+        if (Math.abs(window.orientation) != 90) {
+
+            setTimeout(function() {
+                $('#overlay').show();
+                $('.round').hide();
+                // alert("please rotate your phone to play this game")
+                try {
+                    socket.emit('message', {
+                        type: 'notification',
+                        msg: 'Please rotate your phone to play this game',
+                        command: 'stop'
+                    });
+                    clearInterval(sending);
+                } catch (e) {
+
+                }
+            }, 100)
+
+        } else if (window.orientation < -80) {
+            $('#overlay').hide();
+            $('.round').show();
+            //If landscape upside down
+            angleOffset = -1;
+            try {
+                socket.emit('message', {
+                    type: 'notification',
+                    msg: 'continue',
+                    command: 'start'
+                });
+            } catch (e) {
+
+            }
+
+        } else if (window.orientation = 90) {
+            $('#overlay').hide();
+            $('.round').show();
+            angleOffset = 1;
+            try {
+                socket.emit('message', {
+                    type: 'notification',
+                    msg: 'continue',
+                    command: 'start'
+                });
+            } catch (e) {
+
+            }
+        }
+    });
+    $(window).trigger('orientationchange', true);
     </script>
 
 </body>

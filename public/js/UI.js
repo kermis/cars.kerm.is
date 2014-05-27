@@ -6,6 +6,7 @@ $(function(){
 	$('.choose_button').on('click', function(){
 		var id = $(this).attr('id');
 		$('.info .title').html('How do you play?')
+		$('.back-button').show();
 		switch(id){
 			case 'socket' :
 				playingWithPhone = true;
@@ -29,5 +30,13 @@ $(function(){
 	$('.play').on('click', function(){
 		$('.info').fadeOut();
 		playing = true;
+	})
+
+	$('.back-button').on('click', function(){
+		$('.chose_socket').hide();
+		$('.chose_leap').hide();
+		$('.chose_keys').hide();
+		$('.back-button').hide();
+		$('.buttons').show();
 	})
 })

@@ -15,6 +15,7 @@ var overViewCam;
 var overViewCamHolder;
 
 var POVcamHolder;
+var Pcamera;
 
 var camArr;
 
@@ -24,7 +25,8 @@ var otoo;
 
 var playing = false;
 
-var mapCamera, mapWidth = 240, mapHeight = 160; // w/h should match div dimensions
+var mapCamera, mapWidth = 240,
+    mapHeight = 160; // w/h should match div dimensions
 
 var playingWithLeap = false;
 var playingWithPhone = false;
@@ -116,12 +118,14 @@ function init() {
     // var light = new THREE.HemisphereLight(0xFFFFFF, 1.2)
     scene.add(light)
 
-    var light2 = new THREE.HemisphereLight( 0x404040, 0.5 ); // soft white light
-scene.add( light2 );
+    var light2 = new THREE.HemisphereLight(0x404040, 0.5); // soft white light
+    scene.add(light2);
 
     //sky
     var geometrySky = new THREE.SphereGeometry(4500, 32, 32)
-    var materialSky = new THREE.MeshBasicMaterial({color: 0x261d32})
+    var materialSky = new THREE.MeshBasicMaterial({
+        color: 0x261d32
+    })
     // materialSky.map = THREE.ImageUtils.loadTexture('../img/sky.jpg')
     materialSky.side = THREE.BackSide;
 
@@ -151,13 +155,13 @@ scene.add( light2 );
     container.appendChild(stats.domElement);
     //
 
-    // initPostProcessing();
+    initPostProcessing();
 }
 
 function initPostProcessing() {
 
     composer = new THREE.EffectComposer(renderer);
-    renderModel = new THREE.RenderPass(scene, camera);
+    renderModel = new THREE.RenderPass(scene, sceneCam);
     renderModel.renderToScreen = false;
     composer.addPass(renderModel);
 
@@ -166,42 +170,83 @@ function initPostProcessing() {
     // effectDotScreen.renderToScreen = true;
     // composer.addPass(effectDotScreen);
 
-    var shaderVignette = THREE.VignetteShader;
-    var effectVignette = new THREE.ShaderPass(shaderVignette);
-    // larger values = darker closer to center
-    // darkness < 1  => lighter edges
-    effectVignette.uniforms["offset"].value = 0.7;
-    effectVignette.uniforms["darkness"].value = 0.8;
-    effectVignette.renderToScreen = true;
-    composer.addPass(effectVignette);
+    // var shaderVignette = THREE.VignetteShader;
+    // var effectVignette = new THREE.ShaderPass(shaderVignette);
+    // // larger values = darker closer to center
+    // // darkness < 1  => lighter edges
+    // effectVignette.uniforms["offset"].value = 0.7;
+    // effectVignette.uniforms["darkness"].value = 1.3;
+    // effectVignette.renderToScreen = true;
+    // composer.addPass(effectVignette);
 
 
-    // var bokehPass = new THREE.BokehPass( scene, camera, {
-    //         focus:      1.0,
-    //         aperture:   0.0025,
-    //         maxblur:    5.0,
+    var bokehPass = new THREE.BokehPass( scene, camera, {
+            focus:      1.0,
+            aperture:   0.025,
+            maxblur:    50.0,
 
-    //         width: window.innerWidth,
-    //         height: window.innerHeight
-    //     } );
+            width: window.innerWidth,
+            height: window.innerHeight
+        } );
 
-    // bokehPass.renderToScreen = true;
+    bokehPass.renderToScreen = true;
 
-    // composer.addPass(bokehPass);
+    composer.addPass(bokehPass);
 
 
 
-    // hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader, 0);
-    // vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader, 0);
+    // var hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader, 0);
+    // console.log(hblur.uniforms);
+    // var vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader, 0);
     // var bluriness = 5;
 
-    // hblur.uniforms['h'].value = bluriness / window.innerWidth;
-    // vblur.uniforms['v'].value = bluriness / window.innerHeight;
-    // hblur.uniforms['r'].value = vblur.uniforms['r'].value = 0.5;
+    // // if(hblur && vblur){
+    //     hblur.uniforms['h'].value = bluriness / window.innerWidth;
+    //     vblur.uniforms['v'].value = bluriness / window.innerHeight;
+    //     hblur.uniforms['r'].value = vblur.uniforms['r'].value = 0.5;
+    //     console.log('blurblur')
+    // // }
 
     // composer.addPass(hblur);
     // composer.addPass(vblur);
 
+
+    // var shaderSettings = {
+    //             rings: 3,
+    //             samples: 4
+    //         };
+
+    // var pars = { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, format: THREE.RGBFormat };
+
+    // var rtTextureDepth = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight, pars );
+    // var rtTextureColor = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight, pars );
+
+    // var bokeh_shader = THREE.BokehShader;
+
+    // var bokeh_uniforms = THREE.UniformsUtils.clone(bokeh_shader.uniforms);
+
+    // bokeh_uniforms["tColor"].value = rtTextureColor;
+    // bokeh_uniforms["tDepth"].value = rtTextureDepth;
+
+    // bokeh_uniforms["textureWidth"].value = window.innerWidth;
+
+    // bokeh_uniforms["textureHeight"].value = window.innerHeight;
+
+    // // var materialBokeh = new THREE.ShaderMaterial({
+
+    // //     uniforms: bokeh_uniforms,
+    // //     vertexShader: bokeh_shader.vertexShader,
+    // //     fragmentShader: bokeh_shader.fragmentShader,
+    // //     defines: {
+    // //         RINGS: shaderSettings.rings,
+    // //         SAMPLES: shaderSettings.samples
+    // //     }
+
+    // // });
+
+    // // var quad = new THREE.Mesh(new THREE.PlaneGeometry(window.innerWidth, window.innerHeight), materialBokeh);
+    // // quad.position.z = -500;
+    // composer.addPass(quad);
 
 
 }
@@ -227,7 +272,7 @@ function animate() {
 
     requestAnimationFrame(animate);
 
-    if(playing){
+    if (playing) {
         scene.simulate();
     }
 
@@ -240,8 +285,8 @@ function animate() {
 function render() {
 
     // renderer.render(scene, sceneCam);
-    // renderer.clear();
-    // composer.render();
+    renderer.clear();
+    composer.render();
 
     stats.update();
 
@@ -251,10 +296,11 @@ function render() {
         setOtooPosition();
     }
 
-    var w = window.innerWidth, h = window.innerHeight;
+    var w = window.innerWidth,
+        h = window.innerHeight;
 
-    renderer.clear();
-    renderer.render( scene, sceneCam );
+    // renderer.clear();
+    // renderer.render( scene, sceneCam );
 
 
 }
@@ -290,9 +336,9 @@ function physicsLoopAI() {
 }
 
 function camConfig() {
-    camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 10, 10000);
-    camera.position.set(0, 100, 130);
-    camera.rotation.x = deg2rad(-40);
+    Pcamera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 10, 10000);
+    Pcamera.position.set(0, 100, 130);
+    Pcamera.rotation.x = deg2rad(-40);
     // camera.lookAt(0,0,0);
 
     POVcamera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 10, 10000);
@@ -312,9 +358,10 @@ function camConfig() {
     // overViewCamHolder.rotation.y = 1.570796;
     overViewCamHolder.add(overViewCam)
     //
-    camArr = [camera, POVcamera, overViewCam]
+    camArr = [Pcamera, POVcamera, overViewCam]
 
     // camera = mainCamera;
     sceneCam = POVcamera;
+    camera = POVcamera;
 
 }
