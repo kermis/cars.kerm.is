@@ -30,6 +30,7 @@ $(function(){
 	$('.play').on('click', function(){
 		$('.info').fadeOut();
 		playing = true;
+		music = createjs.Sound.play("music", {loop:-1});
 	})
 
 	$('.back-button').on('click', function(){
@@ -38,5 +39,24 @@ $(function(){
 		$('.chose_keys').hide();
 		$('.back-button').hide();
 		$('.buttons').show();
+	})
+
+	document.addEventListener('keydown', function(e) {
+		console.log(e.keyCode);
+		if(e.keyCode == 27){
+
+			if(paused){
+				$('.pause').fadeOut('slow');
+				music.resume();
+				playing = true;
+				paused = false;
+			}else{
+				$('.pause').fadeIn();
+				music.pause();
+				playing = false;
+				paused = true;
+			}
+
+		}
 	})
 })

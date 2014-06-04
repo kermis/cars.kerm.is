@@ -23,7 +23,7 @@ var sky, materialSky;
 
 var otoo;
 
-var playing = false;
+var music, playing = false, paused = false;
 
 var mapCamera, mapWidth = 240,
     mapHeight = 160; // w/h should match div dimensions
@@ -56,7 +56,7 @@ $(function() {
             src: "/sound/tuut2.mp3"
         }, {
             id: "music",
-            src: "/sound/jump.mp3"
+            src: "/sound/sandstorm.mp3"
         }
     ]);
 
@@ -68,7 +68,6 @@ function handleComplete() {
     init();
     animate();
 
-    // createjs.Sound.play("music", {loop:-1});
 }
 
 function handleProgress(e) {
