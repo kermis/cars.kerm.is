@@ -19,7 +19,7 @@ var Pcamera;
 
 var camArr;
 
-var sky;
+var sky, materialSky;
 
 var otoo;
 
@@ -98,7 +98,7 @@ function init() {
 
     //landscape
     var landscape = new THREE.ObjectLoader();
-    landscape.load('/models/landscape2.js', function(mesh) {
+    landscape.load('/models/landscape3.js', function(mesh) {
         // console.log(mesh);
 
         mesh.scale.set(0.1, 0.1, 0.1);
@@ -114,17 +114,24 @@ function init() {
     //
     // lights
     // var light = new THREE.HemisphereLight(0xFFC8C8, 1.5)
-    var light = new THREE.HemisphereLight(0xB98EFA, 0.8)
-    // var light = new THREE.HemisphereLight(0xFFFFFF, 1.2)
-    scene.add(light)
+    // var light = new THREE.HemisphereLight(0xB98EFA, 0.8)
+    // // var light = new THREE.HemisphereLight(0xFFFFFF, 1.2)
+    // scene.add(light)
 
-    var light2 = new THREE.HemisphereLight(0x404040, 0.5); // soft white light
+    // var light2 = new THREE.HemisphereLight(0x404040, 0.5); // soft white light
+    // scene.add(light2);
+
+    var light2 = new THREE.HemisphereLight(0xFF8080, 0.4); // soft red light
     scene.add(light2);
+
+    var light3 = new THREE.HemisphereLight(0xefefef, 0.2); // soft white light
+    scene.add(light3);
 
     //sky
     var geometrySky = new THREE.SphereGeometry(4500, 32, 32)
-    var materialSky = new THREE.MeshBasicMaterial({
-        color: 0x261d32
+    materialSky = new THREE.MeshBasicMaterial({
+        // color: 0x261d32
+        color: 0x6DE3D4
     })
     // materialSky.map = THREE.ImageUtils.loadTexture('../img/sky.jpg')
     materialSky.side = THREE.BackSide;
@@ -137,6 +144,7 @@ function init() {
     renderer = new THREE.WebGLRenderer({
         antialias: true
     });
+    renderer.shadowMapType = THREE.PCFSoftShadowMap;
     renderer.outstretch = 2.0; // stretches the apparent z-direction
     renderer.outshift = 3.0; // makes the scene come nearer
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -155,7 +163,7 @@ function init() {
     container.appendChild(stats.domElement);
     //
 
-    initPostProcessing();
+    // initPostProcessing();
 }
 
 function initPostProcessing() {
@@ -285,8 +293,8 @@ function animate() {
 function render() {
 
     // renderer.render(scene, sceneCam);
-    renderer.clear();
-    composer.render();
+    // renderer.clear();
+    // composer.render();
 
     stats.update();
 
@@ -296,11 +304,13 @@ function render() {
         setOtooPosition();
     }
 
+    materialSky.color.offsetHSL(0.002, 0, 0);
+
     var w = window.innerWidth,
         h = window.innerHeight;
 
-    // renderer.clear();
-    // renderer.render( scene, sceneCam );
+    renderer.clear();
+    renderer.render( scene, sceneCam );
 
 
 }

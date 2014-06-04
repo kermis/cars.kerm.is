@@ -15,13 +15,14 @@ canvas {
     top: 20%;
     z-index: 100;
     width: 100%;
-    height: 60%;
+    min-height: 60%;
     /*text-shadow: 0 0 5px #000000;*/
-    background: #000000;
-    color:white;
+    background: #FFFFFF;
+    color:#000000;
     text-align: center;
     font-weight: 200;
     /*display: none;*/
+    opacity: 0.95;
 }
 .info h1, .info h2 {
     font-weight: 200;
@@ -65,9 +66,10 @@ button {
     border: none;
     background: transparent;
     background: rgba(0, 0, 0, 0);
-    color: white;
+    color:#000000;
     font-size: 1rem;
     cursor: pointer;
+    max-height: 100%;
     /*font-family: serif;*/
 }
 button p {
@@ -120,8 +122,8 @@ img {
 .play {
     padding: 10px;
     border-radius: 10px;
-    background: #FFFFFF;
-    color: black;
+    background: #000000;
+    color:#FFFFFF;
     font-size: 16pt;
     font-family: bebas-neue, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -166,3 +168,7 @@ img.arrow {
     border-radius: 10px;
 
 }
+/*img{
+    max-width: 100%;
+    max-height: 100%;
+}*/

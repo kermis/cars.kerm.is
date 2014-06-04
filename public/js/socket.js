@@ -91,8 +91,8 @@ var socketController = {
         $('.instruct').qrcode({
             text: genURL,
             render: "canvas", // 'canvas' or 'table'. Default value is 'canvas'
-            background: "#000000",
-            foreground: "#FFFFFF",
+            background: "#FFFFFF",
+            foreground: "#000000",
             width: 200,
             height: 200
         });
