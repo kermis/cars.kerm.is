@@ -2,88 +2,100 @@
 
 <head>
     <title>Cars.kerm.is</title>
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="//use.edgefonts.net/bebas-neue.js"></script>
 </head>
 
 <body>
     <div class="overlay">
+        <div class="logo"></div>
         <div class="percentLoaded">0%</div>
         <div class="progress"></div>
     </div>
+
+    <!-- Information overlay -->
     <div class="info">
-        <h1 class="title">How do you want to play?</h1>
+
+        <h1 class="title">Which controller do you want to use?</h1>
+
         <div class="back-button">
             <button>Back</button>
         </div>
+
         <div class="buttons">
             <button id="leap" class="choose_button">
-                <p>With the Leap Motion</p>
-                <img src="img/leap2_inverted.png">
+                <p>A Leap Motion</p>
+                <img src="/img/leap2_inverted.png">
             </button>
             <button id="socket" class="choose_button">
-                <p>With my modern smartphone</p>
-                <img src="img/phone.png">
+                <p>A smartphone</p>
+                <img src="/img/phone-rod_inverted.png">
             </button>
-            <button id="keys" class="choose_button">
-                <p>With my arrow keys</p>
-                <img src="img/arrows.png">
+            <button id="computer" class="choose_button">
+                <p>A computer</p>
+                <img src="/img/eke_inverted.png">
             </button>
         </div>
 
-        <div class="chose chose_keys">
-            <h2>
-                <img src="img/arrows.png" />&nbsp;&nbsp;
-                <img class="arrow" src="img/arrow.png">&nbsp;&nbsp;
-                <img src="img/wheel.png">
-            </h2>
-            <h2>
-                <img src="img/C.png">&nbsp;&nbsp;
-                <img class="arrow" src="img/arrow.png">&nbsp;&nbsp;
-                <img src="img/cam.png">
-            </h2>
-            <h2>
-                <img src="img/space.png">&nbsp;&nbsp;
-                <img class="arrow" src="img/arrow.png">&nbsp;&nbsp;
-                <img src="img/tuut.png">
-            </h2>
+        <div class="chose  three hide chose_computer">
+            <div class="container">
+                <p>
+                    <img class="keycontroll" src="img/arrows.png" />&nbsp;&nbsp;
+                    <img class="keycontroll arrow" src="img/arrow.png">&nbsp;&nbsp;
+                    <img class="keycontroll" src="img/wheel.png">
+                </p>
+            </div>
+            <div class="container">
+                <p>
+                    <img class="keycontroll" src="img/C.png">&nbsp;&nbsp;
+                    <img class="keycontroll arrow" src="img/arrow.png">&nbsp;&nbsp;
+                    <img class="keycontroll" src="img/cam.png">
+                </p>
+            </div>
+            <div class="container">
+                <p>
+                    <img class="keycontroll"src="img/space.png">&nbsp;&nbsp;
+                    <img class="keycontroll arrow" src="img/arrow.png">&nbsp;&nbsp;
+                    <img class="keycontroll"src="img/tuut.png">
+                </p>
+            </div>
             <br>
             <button class="play">Play</button>
         </div>
-        <div class="chose chose_socket">
+        <div class="chose two hide chose_socket">
             <div class="container pull-left">
-                <h2>Scan the QR Code:
+                <p>Scan the QR Code:
                     <br>
                     <br>
                     <div class="instruct">
 
                     </div>
-                </h2>
+                </p>
             </div>
             <div class="container pull-right text">
-                <h2>Or go to
+                <p>Or go to
                     <br>
                     <span class="go_to_site">http://c.kerm.is/</span>
                     <br>and enter
                     <br>
                     <span class="room_id"></span>
-                </h2>
+                </p>
             </div>
         </div>
-        <div class="chose chose_leap">
+        <div class="chose two  hide chose_leap">
             <div class="container pull-left">
                 <video width="320" height="240" autoplay loop>
                     <source src="videos/Hand-B-O_I.mp4" type="video/mp4">
                         <source src="videos/Hand-B-O_I.webm" type="video/webm">
                 </video>
-                <h2>Accelerate</h2>
+                <p>Accelerate</p>
             </div>
             <div class="container pull-right">
                 <video width="320" height="240" autoplay loop>
                     <source src="videos/Hand-L-R_I.mp4" type="video/mp4">
                         <source src="videos/Hand-L-R_I.webm" type="video/webm">
                 </video>
-                <h2>Steer</h2>
+                <p>Steer</p>
             </div>
             <br>
             <br>

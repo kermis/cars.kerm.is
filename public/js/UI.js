@@ -1,6 +1,6 @@
 // var playingWithLeap = false;
 // var playingWithPhone = false;
-// var playingWithKeys = false;
+// var playingWithKeysr = false;
 
 $(function(){
 	$('.choose_button').on('click', function(){
@@ -19,10 +19,10 @@ $(function(){
 				$('.buttons').hide();
 				$('.chose_leap').show();
 				break;
-			case 'keys':
+			case 'computer':
 				playingWithKeys = true;
 				$('.buttons').hide();
-				$('.chose_keys').show();
+				$('.chose_computer').show();
 				break;
 		}
 	})
@@ -34,9 +34,10 @@ $(function(){
 	})
 
 	$('.back-button').on('click', function(){
+		$('.info .title').html('Which controller do you want to use?')
 		$('.chose_socket').hide();
 		$('.chose_leap').hide();
-		$('.chose_keys').hide();
+		$('.chose_computer').hide();
 		$('.back-button').hide();
 		$('.buttons').show();
 	})
