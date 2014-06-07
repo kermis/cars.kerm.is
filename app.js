@@ -73,18 +73,26 @@ io.sockets.on('connection', function(socket) {
         io.sockets.in(roomio).emit('test', data);
     })
 
-    socket.on('motionData', function(data) {
-        // console.log(data);
-        if(roomio){
-            io.sockets.in(roomio).emit('motionDataOut', data);
-        }
-        // io.sockets.emit('motionDataOut', data);
-    })
+    // socket.on('motionData', function(data) {
+    //     // console.log(data);
+    //     if(roomio){
+    //         io.sockets.in(roomio).emit('motionDataOut', data);
+    //     }
+    //     // io.sockets.emit('motionDataOut', data);
+    // })
 
     socket.on('move', function(data) {
         // console.log('move', data);
         if(roomio){
-            io.sockets.in(roomio).emit('moved', data);
+            io.sockets.in(data.room).emit('moved', data);
+        }
+        // io.sockets.emit('motionDataOut', data);
+    })
+
+    socket.on('joystickMove', function(data) {
+        // console.log('move', data);
+        if(roomio){
+            io.sockets.in(data.room).emit('joystickMove', data);
         }
         // io.sockets.emit('motionDataOut', data);
     })

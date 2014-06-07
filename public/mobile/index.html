@@ -18,8 +18,8 @@
         padding: 0;
         width: 100%;
         height: 100%;
-        font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-        overflow: hidden;
+        /*font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;*/
+        /*overflow: hidden;*/
         /*// background: #8ECCE3;*/
         -webkit-touch-callout: none;
         -webkit-user-select: none;
@@ -27,319 +27,118 @@
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
-        background: #1D1D1D;
+        /*background: #1D1D1D;*/
+        font-family: bebas-neue, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        color: #1f7350;
     }
     #wrap {
         width: 100%;
         height: 100%;
         position: absolute;
+        z-index: 200;
     }
-    .x2, .x {
-        color: white;
-        text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
-        font-size: 1rem;
-        line-height: 0;
-        padding: 5px;
+    .connect {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        font-size: 16pt;
+        z-index: 500;
+        background: rgba(255, 255, 255, 0.7);
     }
-    .a {
-        display: none;
-    }
-    #accelerate {
-        right: 10%;
-        width: 30%;
-        height: 80%;
-    }
-    #reverse {
-        left: 5%;
-        top: 0%;
-    }
-    button {
-        width: 40%;
-        height: 70%;
-        border: none;
-        font-size: 1.5rem;
-        font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-        font-weight: 800;
-        z-index: 100;
-        color: rgba(10, 10, 10, 0.7);
+    .instructions {
         position: absolute;
         top: 0;
-        background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSI+CjxyZWN0IHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgZmlsbD0iIzhBOEE4QSI+PC9yZWN0Pgo8Y2lyY2xlIGN4PSIzIiBjeT0iNC4zIiByPSIxLjgiIGZpbGw9IiM4QThBOEEiPjwvY2lyY2xlPgo8Y2lyY2xlIGN4PSIzIiBjeT0iMyIgcj0iMS44IiBmaWxsPSJibGFjayI+PC9jaXJjbGU+CjxjaXJjbGUgY3g9IjEwLjUiIGN5PSIxMi41IiByPSIxLjgiIGZpbGw9IiNEN0Q3RDciPjwvY2lyY2xlPgo8Y2lyY2xlIGN4PSIxMC41IiBjeT0iMTEuMyIgcj0iMS44IiBmaWxsPSJibGFjayI+PC9jaXJjbGU+Cjwvc3ZnPg==");
-        -webkit-transform: perspective(60em) rotateX(-30deg);
-        /* Chrome, Safari, Opera */
-        transform: perspective(60em) rotateX(-30deg);
-        -webkit-transition: all 200ms;
-        -moz-transition: all 200ms;
-        -o-transition: all 200ms;
-        transition: all 200ms;
-    }
-    button:active {
-        -webkit-transform: rotateX(0deg);
-        /* Chrome, Safari, Opera */
-        transform: rotateX(0deg);
-    }
-    /*.button-holder{
         width: 100%;
-        height: 100%;
-        -webkit-perspective:100%;
-        perspective:100%;
-    }*/
-    .x3 {
-        color:white;
-    }
-    #overlay {
-        -moz-box-sizing: border-box;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        font-size: 3em;
-        font-weight: 800;
-        color: white;
-        display: none;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: red;
-        z-index: 1010;
         text-align: center;
-        display: block;
-        padding: 10%;
-        -webkit-transform: perspective(1em) rotateX(0);
-        transform: perspective(1em) rotateX(0);
+        padding: 10px;
+        font-size: 18pt;
+    }
+    .button-holder button#accelerate {
+        /*display: none;*/
+        right: 0;
+    }
+    .button-holder button#reverse {
+        /*display: none;*/
+        right: 25%;
+    }
+    .button-holder button:focus {
+        outline: none;
+        /*background: #29A065;*/
+    }
+    .button-holder button:hover {
+        outline: none;
+        background: #29A065;
+    }
+    #steeringWheel {
+        width: 50%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 400;
+        /*background: lightblue;*/
+    }
+    .button-holder button {
+        position: absolute;
+        top: 0;
+        width: 25%;
+        height: 100%;
+        border: none;
+        background:#1f7350;
+        border: solid rgba(255, 255, 255, 0.7) 1px;
+        font-size: 1.8rem;
+        font-family: bebas-neue, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        color: white;
+    }
+    @media all and (max-width: 330px) {
+        button#accelerate {
+            height: 50%;
+            right: 0;
+            width: 50%;
+            top: 0;
+        }
+        button#reverse {
+            height: 50%;
+            right: 0;
+            top: 50%;
+            width: 50%;
+        }
     }
     </style>
+    <script src="//use.edgefonts.net/bebas-neue.js"></script>
 </head>
 
 <body>
     <div id="wrap">
 
         <br>
-        <div class="x2">Not Connected</div>
+        <div class="connect">Not Connected</div>
         <br>
-        <div class="x"></div>
-        <br>
-        <div class="x3"></div>
 
         <div class="button-holder">
             <button class="round" id="accelerate">Accelerate</button>
+            <button class="round" id="reverse">Brake / Reverse</button>
         </div>
-        <button class="round" id="reverse">Brake / Reverse</button>
+
 
     </div>
-    <div id='overlay'>
-        Please rotate your phone to play the game
+    <div id="steeringWheel">
+        <div class="instructions">
+            Put your thumb on the screen and move to steer.
+        </div>
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="http://code.createjs.com/soundjs-0.5.2.min.js"></script>
-    <script src="/libs/tappy.js"></script>
+    <!-- // <script src="/libs/tappy.js"></script> -->
+
     <script src="/js/libs/socket.io.min.js"></script>
+    <script src="virtualjoystick.js"></script>
+    <script src="main.js"></script>
     <script>
-    // var socket = io.connect('http://192.168.1.13:3000');
-    var currentURL = window.location.href;
-    var loc = window.location;
-    var angleOffset = 1;
-    console.log(loc);
-    if (loc.port != undefined) {
-        var currentURL = loc.protocol + '//' + loc.hostname + ':' + loc.port;
-    } else {
-        var currentURL = loc.protocol + '//' + loc.hostname;
-    }
-    console.log(currentURL);
-    var socket = io.connect(currentURL);
-
-    var room = queryParam('roomNumber');
-    if (room == '') {
-        room = location.hash.replace('#', '');
-    }
-    //var room = location.hash.replace('#','');
-
-    if (!room) {
-
-        room = 'EmptyRoom' + Math.round(Math.random() * 100000)
-    }
-
-    var motionD, direction, sending;
-
-    $(function() {
-
-        $('#accelerate').on('touchstart', function() {
-            createjs.Sound.play("eng1", {
-                loop: -1
-            });
-            direction = "forward"
-            sendMove();
-        });
-
-        $('#reverse').on('touchstart', function() {
-            direction = "back"
-            sendMove();
-        });
-
-        $('button').on('touchend', function() {
-            createjs.Sound.stop();
-            // socket.emit('move', {
-            //     direction: direction
-            // });
-            clearInterval(sending);
-        });
-
-
-        socket.on('connect', function() {
-            // Connected, let's sign-up for to receive messages for this room
-            socket.emit('room', room);
-            socket.emit('message', {
-                msg: 'mobile joined room with ID ' + room
-            });
-
-            $('.x2').html("Connected to " + room);
-        });
-
-        socket.on('message', function(data) {
-            console.log('Incoming message:', data.msg);
-        });
-
-        socket.on('motionDataOut', function(data) {
-            //console.log('Incoming message:', data);
-            /*$('.x2').html(data.motion)*/
-        });
-
-        // socket.emit('message', {msg: 'emit-test'})
-
-        if (window.DeviceOrientationEvent) {
-            // $('.x').html("DeviceOrientation is supported");
-            window.addEventListener('deviceorientation', handleMotion, false);
-        } else {
-            $('.x').html("<br>Motion Control is not supported in this browser");
-        }
-
-        function handleMotion(event) {
-            // $('.x2').html('<h5><br>beta:' + event.beta + ' <br></h5>');
-
-            motionD = {
-                gamma: event.gamma,
-                beta: event.beta * angleOffset,
-                alpha: event.alpha
-            }
-            // socket.emit('message', {
-            //     msg: event,
-            // })
-
-        }
-
-        initSound();
-    })
-
-    function initSound() {
-
-        console.log('test');
-
-        if (!createjs.Sound.initializeDefaultPlugins()) {
-            return;
-        }
-
-        var audioPath = "/../sound/";
-        var manifest = [{
-            id: "eng1",
-            src: "eng1.wav"
-        }, {
-            id: "eng2",
-            src: "eng2.wav"
-        }];
-
-        createjs.Sound.addEventListener("fileload", handleLoad);
-        createjs.Sound.registerManifest(manifest, audioPath);
-    }
-
-    function handleLoad(event) {
-
-
-
-    }
-    var sendMove = function() {
-        console.log(direction)
-        sending = setInterval(function() {
-            socket.emit('move', {
-                direction: direction
-            });
-        }, 125);
-    }
-
-    setInterval(function() {
-        socket.emit('motionData', motionD)
-    }, 1000 / 20)
-
-    /////// to get room from URL //////////
-
-    function queryParam(name) {
-        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-        var regexS = "[\\?&]" + name + "=([^&#]*)";
-        var regex = new RegExp(regexS);
-        var results = regex.exec(window.location.href);
-        if (results == null) return "";
-        else return results[1];
-    }
-
-    function getRandomColor() {
-        var letters = '0123456789ABCDEF'.split('');
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.round(Math.random() * 15)];
-        }
-        return color;
-    }
-
-    $(window).bind('orientationchange', function(e, onready) {
-        if (onready) {
-            // alert(window.orientation)
-        }
-        if (Math.abs(window.orientation) != 90) {
-
-            setTimeout(function() {
-                $('#overlay').show();
-                $('.round').hide();
-                // alert("please rotate your phone to play this game")
-                try {
-                    socket.emit('message', {
-                        type: 'notification',
-                        msg: 'Please rotate your phone to play this game',
-                        command: 'stop'
-                    });
-                    clearInterval(sending);
-                } catch (e) {
-
-                }
-            }, 100)
-
-        } else if (window.orientation < -80) {
-            $('#overlay').hide();
-            $('.round').show();
-            //If landscape upside down
-            angleOffset = -1;
-            try {
-                socket.emit('message', {
-                    type: 'notification',
-                    msg: 'continue',
-                    command: 'start'
-                });
-            } catch (e) {
-
-            }
-
-        } else if (window.orientation = 90) {
-            $('#overlay').hide();
-            $('.round').show();
-            angleOffset = 1;
-            try {
-                socket.emit('message', {
-                    type: 'notification',
-                    msg: 'continue',
-                    command: 'start'
-                });
-            } catch (e) {
-
-            }
-        }
-    });
-    $(window).trigger('orientationchange', true);
     </script>
 
 </body>

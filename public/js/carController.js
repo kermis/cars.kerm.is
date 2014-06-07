@@ -53,8 +53,43 @@ var carController = {
                 break;
             case 82:
                 // r
-                init();
+                // init();
                 break;
+        }
+    },
+    controlCarWithPhone: function(direction, car) {
+        switch (direction) {
+            case 'left':
+                // Left
+                // // configureAngularMotor(which, low_angle, high_angle, velocity, max_force)
+                car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, 3, 200);
+                car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, 3, 200);
+
+                car.wheel_fl_constraint.enableAngularMotor(1);
+                car.wheel_fr_constraint.enableAngularMotor(1);
+                break;
+
+            case 'right':
+                // Right
+                //  MATH.PI /3 -> 60°;
+                //  MATH.PI /2 -> 90°;
+                //  MATH.PI /4 -> 45°;
+                car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, -3, 200);
+                car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, -3, 200);
+
+
+                car.wheel_fl_constraint.enableAngularMotor(1);
+                car.wheel_fr_constraint.enableAngularMotor(1);
+                break;
+
+            case 'forward':
+
+                car.wheel_fl_constraint.configureAngularMotor(1, 0, 0, -3, 200);
+                car.wheel_fr_constraint.configureAngularMotor(1, 0, 0, -3, 200);
+
+
+                car.wheel_fl_constraint.enableAngularMotor(1);
+                car.wheel_fr_constraint.enableAngularMotor(1);
         }
     },
     moveCar: function(car, direction) {

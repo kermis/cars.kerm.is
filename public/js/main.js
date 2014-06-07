@@ -56,7 +56,7 @@ $(function() {
             src: "/sound/tuut2.mp3"
         }, {
             id: "music",
-            src: "/sound/sandstorm.mp3"
+            src: "/sound/bumpercars.mp3"
         }
     ]);
 
@@ -353,7 +353,7 @@ function camConfig() {
     Pcamera.rotation.x = deg2rad(-40);
     // camera.lookAt(0,0,0);
 
-    POVcamera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 10, 10000);
+    POVcamera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight,1, 10000);
     POVcamera.position.z = 22;
 
     camInUse = 2;

@@ -32,6 +32,7 @@ var socketController = {
         socketController.socket.on('message', this.socketMessage);
         socketController.socket.on('moved', this.command);
         socketController.socket.on('motionDataOut', this.socketMotionDataOut);
+        socketController.socket.on('joystickMove', this.joystickMove);
 
         this.updateInstructions();
     },
@@ -52,6 +53,8 @@ var socketController = {
             playing = false;
         }else if(data.command == 'start'){
             playing = true;
+            $('.info').fadeOut();
+            music = createjs.Sound.play("music", {loop:-1});
         }
     },
     command: function(data) {
@@ -93,9 +96,62 @@ var socketController = {
             render: "canvas", // 'canvas' or 'table'. Default value is 'canvas'
             background: "#FFFFFF",
             foreground: "#000000",
+            foreground: "#000000",
             width: 200,
             height: 200
         });
+
+    },
+    joystickMove: function(data){
+        console.log(data)
+
+        // if(data.up){
+        //     carController.controlCarWithPhone('up', cars[0]);
+        // }else if(!data.up){
+        //     carController.controlCarWithPhone('up_stop', cars[0]);
+        // }
+        // if(data.down){
+        //     carController.controlCarWithPhone('down', cars[0]);
+        // }else if(!data.down){
+        //     carController.controlCarWithPhone('down_stop', cars[0]);
+        // }
+        // if(data.left){
+        //     carController.controlCarWithPhone('left', cars[0]);
+        // }else if(!data.left){
+        //     carController.controlCarWithPhone('', cars[0]);
+        // }
+        // if(data.right){
+        //     carController.controlCarWithPhone('right', cars[0]);
+        // }else if(!data.right){
+        //     carController.controlCarWithPhone('right_stop', cars[0]);
+        // }
+
+        // switch(data.left){
+        //     case true:
+        //         carController.controlCarWithPhone('left', cars[0])
+        //         break;
+        //     case false:
+        //         carController.controlCarWithPhone('left_stop', cars[0])
+        //         break;
+        // }
+        // switch(data.right){
+        //     case true:
+        //         carController.controlCarWithPhone('right', cars[0])
+        //         break;
+        //     case false:
+        //         carController.controlCarWithPhone('right_stop', cars[0])
+        //         break;
+        // }
+
+        if( data.left ){
+            carController.controlCarWithPhone('left', cars[0])
+        }
+        if( data.right ){
+            carController.controlCarWithPhone('right', cars[0])
+        }
+        if( !data.right && !data.left){
+            carController.controlCarWithPhone('forward', cars[0])
+        }
 
     }
 
