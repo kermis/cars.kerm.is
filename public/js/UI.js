@@ -40,6 +40,9 @@ $(function(){
 		$('.chose_computer').hide();
 		$('.back-button').hide();
 		$('.buttons').show();
+		playingWithKeys = false;
+		playingWithLeap = false;
+		playingWithPhone = false;
 	})
 
 	document.addEventListener('keydown', function(e) {

@@ -316,7 +316,7 @@ function render() {
     renderer.render(scene, sceneCam);
 
     //check if the car should go left or right, and make the car go straight if it's neither
-    if (!carController.leftDown && !carController.rightDown && cars[0]) {
+    if (!carController.leftDown && !carController.rightDown && cars[0] && playingWithKeys) {
         cars[0].wheel_fl_constraint.configureAngularMotor(1, 0, 0, -3, 200);
         cars[0].wheel_fr_constraint.configureAngularMotor(1, 0, 0, -3, 200);
 
