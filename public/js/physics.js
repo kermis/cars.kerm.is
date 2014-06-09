@@ -1,7 +1,7 @@
 var ground, otoo, otooPhysi;
 var vehicle_body, vehicle;
 var car = {}, car_material;
-var velocity = 40;
+var velocity = 70;
 
 var otoos = [];
 var cars = [];

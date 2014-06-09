@@ -1,4 +1,6 @@
 var carController = {
+    rightDown: false,
+    leftDown: false,
     controlCar: function(ev, car) {
         switch (ev.keyCode) {
             case 37:
@@ -9,6 +11,8 @@ var carController = {
 
                 car.wheel_fl_constraint.enableAngularMotor(1);
                 car.wheel_fr_constraint.enableAngularMotor(1);
+
+                carController.leftDown = true;
                 break;
 
             case 39:
@@ -22,6 +26,8 @@ var carController = {
 
                 car.wheel_fl_constraint.enableAngularMotor(1);
                 car.wheel_fr_constraint.enableAngularMotor(1);
+
+                carController.rightDown = true;
                 break;
 
             case 38:
@@ -32,6 +38,7 @@ var carController = {
 
                 car.wheel_bl_constraint.enableAngularMotor(2);
                 car.wheel_br_constraint.enableAngularMotor(2);
+
                 break;
 
             case 40:
@@ -41,6 +48,7 @@ var carController = {
 
                 car.wheel_bl_constraint.enableAngularMotor(2);
                 car.wheel_br_constraint.enableAngularMotor(2);
+
                 break;
             case 32:
                 //space
@@ -145,12 +153,14 @@ var carController = {
                 // Left
                 car.wheel_fl_constraint.disableAngularMotor(1);
                 car.wheel_fr_constraint.disableAngularMotor(1);
+                carController.leftDown = false;
                 break;
 
             case 39:
                 // Right
                 car.wheel_fl_constraint.disableAngularMotor(1);
                 car.wheel_fr_constraint.disableAngularMotor(1);
+                carController.rightDown = false;
                 break;
 
             case 38:

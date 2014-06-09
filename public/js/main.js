@@ -23,7 +23,8 @@ var sky, materialSky;
 
 var otoo;
 
-var music, playing = false, paused = false;
+var music, playing = false,
+    paused = false;
 
 var mapCamera, mapWidth = 240,
     mapHeight = 160; // w/h should match div dimensions
@@ -64,9 +65,9 @@ $(function() {
 })
 
 function handleComplete() {
-     $('.overlay').delay(10).fadeOut('slow', function() {
+    $('.overlay').delay(10).fadeOut('slow', function() {
         $('.info').addClass('slide_down');
-     });
+    });
 
     init();
     animate();
@@ -190,14 +191,14 @@ function initPostProcessing() {
     // composer.addPass(effectVignette);
 
 
-    var bokehPass = new THREE.BokehPass( scene, camera, {
-            focus:      1.0,
-            aperture:   0.025,
-            maxblur:    50.0,
+    var bokehPass = new THREE.BokehPass(scene, camera, {
+        focus: 1.0,
+        aperture: 0.025,
+        maxblur: 50.0,
 
-            width: window.innerWidth,
-            height: window.innerHeight
-        } );
+        width: window.innerWidth,
+        height: window.innerHeight
+    });
 
     bokehPass.renderToScreen = true;
 
@@ -312,7 +313,17 @@ function render() {
         h = window.innerHeight;
 
     renderer.clear();
-    renderer.render( scene, sceneCam );
+    renderer.render(scene, sceneCam);
+
+    //check if the car should go left or right, and make the car go straight if it's neither
+    if (!carController.leftDown && !carController.rightDown && cars[0]) {
+        cars[0].wheel_fl_constraint.configureAngularMotor(1, 0, 0, -3, 200);
+        cars[0].wheel_fr_constraint.configureAngularMotor(1, 0, 0, -3, 200);
+
+
+        cars[0].wheel_fl_constraint.enableAngularMotor(1);
+        cars[0].wheel_fr_constraint.enableAngularMotor(1);
+    }
 
 
 }
@@ -353,7 +364,7 @@ function camConfig() {
     Pcamera.rotation.x = deg2rad(-40);
     // camera.lookAt(0,0,0);
 
-    POVcamera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight,1, 10000);
+    POVcamera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 1, 10000);
     POVcamera.position.z = 22;
 
     camInUse = 2;
