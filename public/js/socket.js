@@ -29,6 +29,7 @@ var socketController = {
     },
     connect: function() {
         socketController.socket.on('connect', this.socketConnected);
+        socketController.socket.on('mobile_disconnect', this.socketDisconnected);
         socketController.socket.on('message', this.socketMessage);
         socketController.socket.on('moved', this.command);
         socketController.socket.on('motionDataOut', this.socketMotionDataOut);
@@ -46,6 +47,9 @@ var socketController = {
             console.log('joined room ' + room);
         }
     },
+    socketDisconnected: function(){
+        showNotification('Phone connection lost')
+    },
     socketMessage: function(data) {
         console.log('Incoming message:', data);
         console.log(data.command)
@@ -55,6 +59,9 @@ var socketController = {
             playing = true;
             $('.info').fadeOut();
             music = createjs.Sound.play("music", {loop:-1});
+        }
+        if (data.msg.indexOf('mobile joined') != -1) {
+            showNotification('Phone Connected')
         }
     },
     command: function(data) {
@@ -94,9 +101,8 @@ var socketController = {
         $('.instruct').qrcode({
             text: genURL,
             render: "canvas", // 'canvas' or 'table'. Default value is 'canvas'
-            background: "#FFFFFF",
-            foreground: "#000000",
-            foreground: "#000000",
+            background: "#EFEFEF",
+            foreground: "#1f7350",
             width: 200,
             height: 200
         });
@@ -105,43 +111,6 @@ var socketController = {
     joystickMove: function(data){
         console.log(data)
 
-        // if(data.up){
-        //     carController.controlCarWithPhone('up', cars[0]);
-        // }else if(!data.up){
-        //     carController.controlCarWithPhone('up_stop', cars[0]);
-        // }
-        // if(data.down){
-        //     carController.controlCarWithPhone('down', cars[0]);
-        // }else if(!data.down){
-        //     carController.controlCarWithPhone('down_stop', cars[0]);
-        // }
-        // if(data.left){
-        //     carController.controlCarWithPhone('left', cars[0]);
-        // }else if(!data.left){
-        //     carController.controlCarWithPhone('', cars[0]);
-        // }
-        // if(data.right){
-        //     carController.controlCarWithPhone('right', cars[0]);
-        // }else if(!data.right){
-        //     carController.controlCarWithPhone('right_stop', cars[0]);
-        // }
-
-        // switch(data.left){
-        //     case true:
-        //         carController.controlCarWithPhone('left', cars[0])
-        //         break;
-        //     case false:
-        //         carController.controlCarWithPhone('left_stop', cars[0])
-        //         break;
-        // }
-        // switch(data.right){
-        //     case true:
-        //         carController.controlCarWithPhone('right', cars[0])
-        //         break;
-        //     case false:
-        //         carController.controlCarWithPhone('right_stop', cars[0])
-        //         break;
-        // }
 
         if( data.left ){
             carController.controlCarWithPhone('left', cars[0])

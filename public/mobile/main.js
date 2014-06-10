@@ -83,18 +83,6 @@ $(function() {
         strokeStyle: '#696969',
     });
 
-    joystick.up(function(){
-        console.log('ip')
-    })
-
-    joystick.addEventListener('touchStart', function() {
-        console.log('down')
-    })
-    joystick.addEventListener('touchEnd', function() {
-        console.log('up')
-    })
-
-
 
     socket.on('connect', function() {
         // Connected, let's sign-up for to receive messages for this room

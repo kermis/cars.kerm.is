@@ -20,8 +20,8 @@ var physics = {
             new THREE.MeshBasicMaterial({
                 color: 0xFDBFC0
             }),
-            1, // high friction
-            .4 // low restitution
+            2, // high friction
+            .1 // low restitution
         );
 
         // Ground

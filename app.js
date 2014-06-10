@@ -96,10 +96,12 @@ io.sockets.on('connection', function(socket) {
         }
         // io.sockets.emit('motionDataOut', data);
     })
+
+    socket.on('disconnect', function(){
+        // console.log('Disconnected', roomio)
+        socket.broadcast.to(roomio).emit('mobile_disconnect', {room: roomio});
+    });
 });
 
 // now, it's easy to send a message to just the clients in a given room
 // io.sockets.in(room).emit('message', 'what is going on, party people?');
-
-// this message will NOT go to the client defined above
-io.sockets. in ('foobar').emit('message', 'anyone in this room yet?');

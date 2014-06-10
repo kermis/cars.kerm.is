@@ -12,16 +12,21 @@ var leapController = {
         controller = new Leap.Controller();
         controller.connect();
 
-        controller.on('connect', this.controllerConnected)
+        controller.on('streamingStarted', this.controllerConnected)
+        controller.on('streamingStopped', this.controllerDisconnected)
         controller.on('animationFrame', this.onAnimationframe)
     },
     controllerConnected: function() {
         console.log('Leap connected')
+        showNotification('Leap connected');
         $('.debug').html('To play with the Leap, use your arm as a fishing rod and press the space bar to pull the fish up')
         if (debug) {
             console.log("Leap Successfully connected.");
         }
         this.leapConnected = true;
+    },
+    controllerDisconnected: function(){
+        showNotification('Leap disconnected')
     },
     onAnimationframe: function(frame) {
         // your code here
@@ -30,7 +35,7 @@ var leapController = {
         try {
             var pointables = frame.hands;
 
-            if(count > 10){
+            if(count > 10 && leapController.leapConnected){
 
                 /* Forward - Backwards */
                 var rotationX = rad2deg(pointables[0].pitch());

@@ -45,7 +45,7 @@ $(function() {
             src: "/js/libs/ammo.js"
         }, {
             id: "landscape",
-            src: "/models/landscape2.js"
+            src: "/models/landscape3.js"
         }, {
             id: "physijs_worker",
             src: "/models/botsotoo.js"
