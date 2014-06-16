@@ -9,6 +9,21 @@
 
 
     <style>
+    @font-face {
+    font-family: bebas-neue;
+        src:
+            local('Bebas Neue'),
+            local('Bebas Neue Regular'),
+            url('/css/fonts/bebasneue-webfont.ttf'),
+            url('/css/fonts/bebasneue-webfont.eot'),
+            url('/css/fonts/bebasneue-webfont.svg'),
+            url('/css/fonts/bebasneue-webfont.woff');
+    }
+    *, *:before, *:after {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
     body {
         margin: 0;
         padding: 0;
@@ -26,7 +41,6 @@
         position: relative;
         width: 90%;
         margin:0 auto;
-        top:15%;
     }
     input, button {
         width: 100%;
@@ -56,14 +70,13 @@
         height: 220px;
         position: relative;
         margin: 0 auto;
-        margin-top: 100px;
+        margin-top: 30px;
         background-image: url("/img/logo.svg");
         background-position: center center;
         background-repeat: no-repeat;
         background-size: contain;
     }
     </style>
-    <script src="//use.edgefonts.net/bebas-neue.js"></script>
 
 
 </head>
