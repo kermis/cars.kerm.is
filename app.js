@@ -7,8 +7,6 @@ var path = require('path');
 // Create a new instance of Express
 var app = express();
 
-// Import the Anagrammatix game file.
-// var game = require('./game');
 
 // Create a simple Express application
 app.configure(function() {
@@ -57,48 +55,31 @@ io.sockets.on('connection', function(socket) {
         if(roomio){
             socket.join(roomio);
         }
-        // console.log('room room:', roomio)
     });
 
     socket.on('message', function(data) {
-        // console.log('currentroom: ', roomio);
-        // console.log(data);
         if(roomio){
             io.sockets.in(roomio).emit('message', data);
         }
     })
 
     socket.on('test', function(data) {
-        // console.log(data);
         io.sockets.in(roomio).emit('test', data);
     })
 
-    // socket.on('motionData', function(data) {
-    //     // console.log(data);
-    //     if(roomio){
-    //         io.sockets.in(roomio).emit('motionDataOut', data);
-    //     }
-    //     // io.sockets.emit('motionDataOut', data);
-    // })
-
     socket.on('move', function(data) {
-        // console.log('move', data);
         if(roomio){
             io.sockets.in(data.room).emit('moved', data);
         }
-        // io.sockets.emit('motionDataOut', data);
     })
 
     socket.on('joystickMove', function(data) {
-        // console.log('move', data);
         if(roomio){
             io.sockets.in(data.room).emit('joystickMove', data);
         }
-        // io.sockets.emit('motionDataOut', data);
     })
 
     socket.on('disconnect', function(){
-        // console.log('Disconnected', roomio)
         socket.broadcast.to(roomio).emit('mobile_disconnect', {room: roomio});
     });
 });

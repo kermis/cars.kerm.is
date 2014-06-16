@@ -13,6 +13,17 @@
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
     }
+     @font-face {
+    font-family: bebas-neue;
+        src:
+            local('Bebas Neue'),
+            local('Bebas Neue Regular'),
+            url('/css/fonts/bebasneue-webfont.ttf'),
+            url('/css/fonts/bebasneue-webfont.eot'),
+            url('/css/fonts/bebasneue-webfont.svg'),
+            url('/css/fonts/bebasneue-webfont.woff');
+    }
+
     body, html {
         margin:0;
         padding: 0;
@@ -110,7 +121,6 @@
         }
     }
     </style>
-    <script src="//use.edgefonts.net/bebas-neue.js"></script>
 </head>
 
 <body>
@@ -132,12 +142,12 @@
             Put your thumb on the screen and move to steer.
         </div>
     </div>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="http://code.createjs.com/soundjs-0.5.2.min.js"></script>
-    <!-- // <script src="/libs/tappy.js"></script> -->
 
+    <script src="/libs/jquery-2.0.2.min.js"></script>
+    <script src="/js/libs/soundjs-0.5.2.min.js"></script>
     <script src="/js/libs/socket.io.min.js"></script>
     <script src="virtualjoystick.js"></script>
+
     <script src="main.js"></script>
     <script>
     </script>
