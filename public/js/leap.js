@@ -23,19 +23,21 @@ var leapController = {
         if (debug) {
             console.log("Leap Successfully connected.");
         }
-        this.leapConnected = true;
+        leapController.leapConnected = true;
     },
     controllerDisconnected: function(){
         showNotification('Leap disconnected')
     },
     onAnimationframe: function(frame) {
         // your code here
-        count++;
+        // count++;
+        // console.log(frame.hands);
 
         try {
             var pointables = frame.hands;
 
-            if(count > 10 && leapController.leapConnected){
+            if(leapController.leapConnected){
+                // console.log(frame.hands)
 
                 /* Forward - Backwards */
                 var rotationX = rad2deg(pointables[0].pitch());
@@ -75,10 +77,10 @@ var leapController = {
 
             // console.log(hand.rotY, rod.rotation.y);
             // $('.debug').html(pointables.length + ' pointables visible');
-            updateRod();
+            // updateRod();
 
         } catch (e) {
-        //     console.log('error',e);
+            // console.log('error',e);
             // $('.debug').html('No fingers visible'+ e);
         //     // console.log('no fingers in frame')
         }
