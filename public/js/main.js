@@ -159,11 +159,11 @@ function init() {
     container = document.getElementById('container');
     container.appendChild(renderer.domElement);
 
-    stats = new Stats();
-    stats.domElement.style.position = 'absolute';
-    stats.domElement.style.top = '0px';
-    stats.domElement.style.zIndex = 100;
-    container.appendChild(stats.domElement);
+    // stats = new Stats();
+    // stats.domElement.style.position = 'absolute';
+    // stats.domElement.style.top = '0px';
+    // stats.domElement.style.zIndex = 100;
+    // container.appendChild(stats.domElement);
     //
 
     // initPostProcessing();
@@ -299,7 +299,7 @@ function render() {
     // renderer.clear();
     // composer.render();
 
-    stats.update();
+    // stats.update();
 
     // sky.rotation.y += 0.001;
 
